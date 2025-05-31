@@ -56,7 +56,7 @@
     "cs-check": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -vvv --diff",
     "cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -vvv",
     "phpstan": "php tools/phpstan/vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=2G",
-    "rector": "php tools/rector/vendor/bin/rector process --dry-run --xdebug --memory-limit=2G",
+    "rector": "php tools/rector/vendor/bin/rector process --dry-run --memory-limit=2G",
     "test": [
       "@test-unit"
     ],

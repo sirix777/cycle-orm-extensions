@@ -41,7 +41,7 @@ final class SelectFactory
             throw new InvalidArgumentException('Invalid entity class');
         }
 
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         return new Select($this->orm, $role);
     }
 }

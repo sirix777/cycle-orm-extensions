@@ -60,12 +60,8 @@ abstract class AbstractRepositoryTestCase extends TestCase
      * @param array<mixed>  $parameters     The parameters to pass to the method
      * @param array<string> $parameterTypes The expected parameter types (e.g., ['object', 'bool', 'bool'])
      */
-    protected function assertMethodExists(
-        MockObject $mock,
-        string $methodName,
-        array $parameters,
-        array $parameterTypes
-    ): void {
+    protected function assertMethodExists(MockObject $mock, string $methodName, array $parameters, array $parameterTypes): void
+    {
         $withParams = [];
 
         foreach ($parameters as $index => $param) {
@@ -92,12 +88,8 @@ abstract class AbstractRepositoryTestCase extends TestCase
      * @param class-string<Throwable> $exceptionClass The expected exception class
      * @param array<mixed>            $parameters     The parameters to pass to the method
      */
-    protected function assertMethodThrowsException(
-        MockObject $mock,
-        string $methodName,
-        string $exceptionClass,
-        array $parameters
-    ): void {
+    protected function assertMethodThrowsException(MockObject $mock, string $methodName, string $exceptionClass, array $parameters): void
+    {
         $exception = new $exceptionClass('Test exception');
 
         $mock->method($methodName)
