@@ -19,6 +19,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Currency typecasts for handling currency objects
 - CurrencyCode typecasts for handling currency codes
 - Added sirix/money as a suggested dependency
-
-### Fixed
-- Updated EntityInterface to allow null return type from `getIdentifier()` method
