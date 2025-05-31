@@ -12,10 +12,7 @@ use Cycle\ORM\Entity\Behavior\Event\Mapper\Command\OnUpdate;
 
 final class ChronosUpdateListener
 {
-    public function __construct(
-        private readonly string $field = 'updatedAt',
-        private readonly bool $nullable = false
-    ) {}
+    public function __construct(private readonly string $field = 'updatedAt', private readonly bool $nullable = false) {}
 
     #[Listen(OnUpdate::class)]
     public function __invoke(OnUpdate $event): void
