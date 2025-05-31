@@ -1,0 +1,74 @@
+{
+  "name": "sirix/cycle-orm-extensions",
+  "description": "Practical extensions for Cycle ORM: base repositories, entity traits, typecasts and more",
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+    "cycle/orm": "^2.10",
+    "ramsey/uuid": "^4.7"
+  },
+  "require-dev": {
+    "cakephp/chronos": "^3.1",
+    "cycle/annotated": "^4.2",
+    "cycle/entity-behavior": "^1.4",
+    "ergebnis/composer-normalize": "^2.47",
+    "vjik/cycle-typecast": "^3.0",
+    "phpunit/phpunit": "^10.5"
+  },
+  "suggest": {
+    "cakephp/chronos": "Required for Chronos datetime support",
+    "cycle/annotated": "Required for annotated entity support",
+    "cycle/entity-behavior": "Required for entity behaviors and lifecycle hooks support",
+    "vjik/cycle-typecast": "Required for Typecast support"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Sirix\\Cycle\\Extension\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Sirix\\Cycle\\Extension\\Test\\": "test/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "if [ ! -d \"tools/php-cs-fixer/vendor\" ]; then composer install --working-dir=tools/php-cs-fixer; fi",
+      "if [ ! -d \"tools/phpstan/vendor\" ]; then composer install --working-dir=tools/phpstan; fi",
+      "if [ ! -d \"tools/rector/vendor\" ]; then composer install --working-dir=tools/rector; fi"
+    ],
+    "post-update-cmd": [
+      "@tools-update"
+    ],
+    "check": [
+      "@cs-check",
+      "@rector",
+      "@phpstan"
+    ],
+    "cs-check": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -vvv --diff",
+    "cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -vvv",
+    "phpstan": "php tools/phpstan/vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=2G",
+    "rector": "php tools/rector/vendor/bin/rector process --dry-run --xdebug --memory-limit=2G",
+    "test": [
+      "@test-unit"
+    ],
+    "test-coverage": "phpunit test/unit --colors=always --coverage-clover clover.xml",
+    "test-unit": "php vendor/bin/phpunit --testsuite=unit --testdox",
+    "tools-update": [
+      "@tools-update-csfix",
+      "@tools-update-phpstan",
+      "@tools-update-rector"
+    ],
+    "tools-update-csfix": "composer update -W --working-dir=tools/php-cs-fixer",
+    "tools-update-phpstan": "composer update -W --working-dir=tools/phpstan",
+    "tools-update-rector": "composer update -W --working-dir=tools/rector"
+  }
+}
