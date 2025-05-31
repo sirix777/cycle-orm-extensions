@@ -69,6 +69,9 @@ Custom typecasts for various data types:
 - Array typecasts
 - Boolean typecasts
 - Chronos datetime typecasts
+- Currency typecasts
+- CurrencyCode typecasts
+- Money typecasts
 - UUID typecasts
 
 ## Usage Examples
@@ -219,6 +222,7 @@ The package suggests the following dependencies for additional functionality:
 - `cakephp/chronos`: Required for Chronos datetime support
 - `cycle/annotated`: Required for annotated entity support
 - `cycle/entity-behavior`: Required for entity behaviors and lifecycle hooks support
+- `sirix/money`: Required for Money and Currency typecast support
 - `vjik/cycle-typecast`: Required for Typecast support
 
 ## License

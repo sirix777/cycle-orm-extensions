@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 
 use function is_string;
 
-class UuidToBytesType extends AbstractUuidType
+final class UuidToBytesType extends AbstractUuidType
 {
     protected function toDatabaseValue(UuidInterface $value): string
     {

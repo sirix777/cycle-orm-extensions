@@ -15,7 +15,7 @@ use function implode;
 use function is_array;
 use function is_string;
 
-class EnumArrayToDelimitedStringType implements TypeInterface
+final class EnumArrayToDelimitedStringType implements TypeInterface
 {
     /**
      * @param class-string<BackedEnum> $enumClass

@@ -14,7 +14,7 @@ use function implode;
 use function is_array;
 use function is_string;
 
-class ArrayToDelimitedStringType implements TypeInterface
+final class ArrayToDelimitedStringType implements TypeInterface
 {
     public function __construct(private readonly string $delimiter = ',') {}
 

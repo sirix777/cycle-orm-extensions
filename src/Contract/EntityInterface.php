@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 
 interface EntityInterface
 {
-    public function getIdentifier(): int|UuidInterface;
+    public function getIdentifier(): null|int|UuidInterface;
 
     public function setIdentifier(int|UuidInterface $identifier): void;
 }

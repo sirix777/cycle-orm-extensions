@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use function is_int;
 use function is_string;
 
-class ChronosToTimestampType extends AbstractChronosType
+final class ChronosToTimestampType extends AbstractChronosType
 {
     protected function toDatabaseValue(Chronos $value): string
     {

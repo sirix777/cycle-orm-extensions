@@ -14,7 +14,7 @@ use function is_array;
 use function json_decode;
 use function json_encode;
 
-class ArrayToJsonType implements TypeInterface
+final class ArrayToJsonType implements TypeInterface
 {
     /**
      * @throws JsonException

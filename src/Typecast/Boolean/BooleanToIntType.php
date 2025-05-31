@@ -8,7 +8,7 @@ use Vjik\CycleTypecast\CastContext;
 use Vjik\CycleTypecast\TypeInterface;
 use Vjik\CycleTypecast\UncastContext;
 
-class BooleanToIntType implements TypeInterface
+final class BooleanToIntType implements TypeInterface
 {
     public function convertToDatabaseValue(mixed $value, UncastContext $context): int
     {
