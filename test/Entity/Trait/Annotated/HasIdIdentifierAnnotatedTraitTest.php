@@ -44,6 +44,6 @@ final class HasIdIdentifierAnnotatedTraitTest extends TestCase
 
         $property = $reflection->getProperty('id');
 
-        $this->assertTrue($property->isProtected(), 'Property should be protected');
+        $this->assertTrue($property->isPrivate(), 'Property should be private');
     }
 }

@@ -44,6 +44,6 @@ final class HasUuidIdentifierAnnotatedTraitTest extends TestCase
 
         $property = $reflection->getProperty('uuid');
 
-        $this->assertTrue($property->isProtected(), 'Property should be protected');
+        $this->assertTrue($property->isPrivate(), 'Property should be private');
     }
 }

@@ -8,7 +8,7 @@ use Cake\Chronos\Chronos;
 
 trait HasChronosDeleteTrait
 {
-    protected ?Chronos $deletedAt = null;
+    private ?Chronos $deletedAt = null;
 
     public function getDeletedAt(): ?Chronos
     {

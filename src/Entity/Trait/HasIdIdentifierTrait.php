@@ -9,7 +9,7 @@ use Ramsey\Uuid\UuidInterface;
 
 trait HasIdIdentifierTrait
 {
-    protected ?int $id = null;
+    private ?int $id = null;
 
     public function setIdentifier(int|UuidInterface $identifier): void
     {

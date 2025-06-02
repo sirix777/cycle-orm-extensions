@@ -13,5 +13,5 @@ trait HasChronosUpdateDatetimeAnnotatedTrait
     use HasChronosUpdateTrait;
 
     #[Column(type: 'datetime')]
-    protected ?Chronos $updatedAt = null;
+    private ?Chronos $updatedAt = null;
 }

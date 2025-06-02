@@ -8,7 +8,7 @@ use Cake\Chronos\Chronos;
 
 trait HasChronosUpdateTrait
 {
-    protected ?Chronos $updatedAt = null;
+    private ?Chronos $updatedAt = null;
 
     public function getUpdatedAt(): ?Chronos
     {

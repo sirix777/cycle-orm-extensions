@@ -53,7 +53,8 @@
     "check": [
       "@cs-check",
       "@rector",
-      "@phpstan"
+      "@phpstan",
+      "@test"
     ],
     "cs-check": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -vvv --diff",
     "cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -vvv",

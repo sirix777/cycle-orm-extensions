@@ -45,7 +45,7 @@ final class HasChronosUpdateDatetimeAnnotatedTraitTest extends TestCase
 
         $property = $reflection->getProperty('updatedAt');
 
-        $this->assertTrue($property->isProtected(), 'Property should be protected');
+        $this->assertTrue($property->isPrivate(), 'Property should be private');
     }
 
     public function testPropertyDefaultValue(): void

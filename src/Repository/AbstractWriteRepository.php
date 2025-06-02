@@ -82,7 +82,7 @@ abstract class AbstractWriteRepository extends AbstractReadRepository implements
     /**
      * @throws RepositoryPersistException
      */
-    private function flush(): void
+    public function flush(): void
     {
         try {
             $this->entityManager->run();

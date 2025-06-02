@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 
 trait HasUuidIdentifierTrait
 {
-    protected UuidInterface $uuid;
+    private UuidInterface $uuid;
 
     /**
      * Generate a new UUID.

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 02/06/2025
+
+### Breaking Changes
+- Changed visibility of properties in entity traits from protected to private
+- Added flush() method to WriteRepositoryInterface
+
+### Changed
+- Added test command to the check script in composer.json
+
 ## [1.0.0] - 31/05/2025
 
 ### Added

@@ -44,6 +44,6 @@ final class HasChronosCreateDatetimeAnnotatedTraitTest extends TestCase
 
         $property = $reflection->getProperty('createdAt');
 
-        $this->assertTrue($property->isProtected(), 'Property should be protected');
+        $this->assertTrue($property->isPrivate(), 'Property should be private');
     }
 }

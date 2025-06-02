@@ -12,5 +12,5 @@ trait HasIdIdentifierAnnotatedTrait
     use HasIdIdentifierTrait;
 
     #[Column(type: 'bigPrimary')]
-    protected ?int $id = null;
+    private ?int $id = null;
 }
