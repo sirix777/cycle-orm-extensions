@@ -7,7 +7,7 @@ namespace Sirix\Cycle\Extension\Test\Entity\Trait;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
 use Sirix\Cycle\Extension\Entity\Trait\HasUuidIdentifierTrait;
 
 final class HasUuidIdentifierTraitTest extends TestCase

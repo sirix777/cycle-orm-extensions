@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sirix\Cycle\Extension\Contract;
+namespace Sirix\Cycle\Extension\Domain\Contract;
 
 use Ramsey\Uuid\UuidInterface;
 use Sirix\Cycle\Extension\Exception\EntityNotFoundException;

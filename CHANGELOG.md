@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 22/10/2025
+
+### Changed
+- Moved contracts under the `Sirix\Cycle\Extension\Domain\Contract` namespace (e.g. EntityInterface and repository interfaces)
+
+### Added
+- Composer Normalize tool configuration under tools/composer-normalize
+
+### Fixed
+- Adjusted tests and examples to reflect the new namespaces and repository changes
+
 ## [2.0.0] - 02/06/2025
 
 ### Breaking Changes

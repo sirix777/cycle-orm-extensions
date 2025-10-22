@@ -6,8 +6,8 @@ namespace Sirix\Cycle\Extension\Repository;
 
 use Cycle\ORM\EntityManager;
 use Cycle\ORM\ORMInterface;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
-use Sirix\Cycle\Extension\Contract\WriteRepositoryInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\WriteRepositoryInterface;
 use Sirix\Cycle\Extension\Exception\RepositoryPersistException;
 use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Throwable;

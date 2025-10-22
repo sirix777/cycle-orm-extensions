@@ -12,6 +12,6 @@ trait HasUuidIdentifierAnnotatedTrait
 {
     use HasUuidIdentifierTrait;
 
-    #[Column(type: 'uuid')]
+    #[Column(type: 'uuid', primary: true)]
     private UuidInterface $uuid;
 }

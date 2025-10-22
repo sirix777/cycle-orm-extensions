@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Test\Repository;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
-use Sirix\Cycle\Extension\Contract\WriteRepositoryInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\WriteRepositoryInterface;
 use Sirix\Cycle\Extension\Exception\RepositoryPersistException;
 
 /**

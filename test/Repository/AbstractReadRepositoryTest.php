@@ -6,8 +6,8 @@ namespace Sirix\Cycle\Extension\Test\Repository;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
-use Sirix\Cycle\Extension\Contract\ReadRepositoryInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\ReadRepositoryInterface;
 use Sirix\Cycle\Extension\Exception\EntityNotFoundException;
 
 /**

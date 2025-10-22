@@ -8,9 +8,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
 use Throwable;
-
 use function gettype;
 use function is_object;
 

@@ -7,7 +7,7 @@ namespace Sirix\Cycle\Extension\Factory;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Select;
 use InvalidArgumentException;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
 
 use function is_a;
 

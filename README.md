@@ -97,7 +97,7 @@ namespace Sirix\Cycle\Extension\Example;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Sirix\Cycle\Extension\Behavior\EventListeners;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
 use Sirix\Cycle\Extension\Entity\Trait\Annotated\HasChronosCreateTimestampAnnotatedTrait;
 use Sirix\Cycle\Extension\Entity\Trait\Annotated\HasChronosUpdateTimestampAnnotatedTrait;
 use Sirix\Cycle\Extension\Entity\Trait\Annotated\HasUuidIdentifierAnnotatedTrait;

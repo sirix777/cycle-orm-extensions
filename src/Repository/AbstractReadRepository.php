@@ -6,8 +6,8 @@ namespace Sirix\Cycle\Extension\Repository;
 
 use Cycle\ORM\Select\Repository;
 use Ramsey\Uuid\UuidInterface;
-use Sirix\Cycle\Extension\Contract\EntityInterface;
-use Sirix\Cycle\Extension\Contract\ReadRepositoryInterface;
+use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
+use Sirix\Cycle\Extension\Domain\Contract\ReadRepositoryInterface;
 use Sirix\Cycle\Extension\Exception\EntityNotFoundException;
 use Sirix\Cycle\Extension\Factory\SelectFactory;
 
