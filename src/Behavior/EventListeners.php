@@ -10,11 +10,13 @@ use Cycle\Schema\Registry;
 use Cycle\Schema\SchemaModifierInterface;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
+use function is_string;
+
 #[Attribute(Attribute::TARGET_CLASS), NamedArgumentConstructor]
 final class EventListeners implements SchemaModifierInterface
 {
     /**
-     * @param class-string[] $listeners
+     * @param array<array{0: class-string, 1: array<string, mixed>}|class-string> $listeners
      */
     public function __construct(private readonly array $listeners) {}
 
@@ -28,7 +30,14 @@ final class EventListeners implements SchemaModifierInterface
     public function modifySchema(array &$schema): void
     {
         foreach ($this->listeners as $listener) {
-            $schema[SchemaInterface::LISTENERS][] = $listener;
+            if (is_string($listener)) {
+                $schema[SchemaInterface::LISTENERS][] = $listener;
+
+                continue;
+            }
+
+            [$listenerClass, $args] = $listener;
+            $schema[SchemaInterface::LISTENERS][] = [] === $args ? $listenerClass : [$listenerClass, $args];
         }
     }
 

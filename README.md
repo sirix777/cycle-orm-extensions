@@ -74,6 +74,70 @@ Custom typecasts for various data types:
 - Money typecasts
 - UUID typecasts
 
+### Event Listeners
+
+The `EventListeners` attribute lets you declare Cycle ORM entity listeners directly on the entity class. It injects the configured listeners into the entity schema under `SchemaInterface::LISTENERS`.
+
+Note: To use listeners, you must install the Cycle Entity Behavior package:
+
+```bash
+composer require cycle/entity-behavior
+```
+
+You can provide listeners as simple class-strings or as `[class, args]` tuples. You may also mix both forms in one array. Passing an empty args array `[]` is equivalent to specifying the class directly; the attribute normalizes this for you.
+
+#### Simple listeners (class-strings only)
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Behavior\EventListeners;
+use Sirix\Cycle\Extension\Listener\ChronosCreateListener;
+use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
+
+#[EventListeners(listeners: [
+    ChronosCreateListener::class,
+    ChronosUpdateListener::class,
+])]
+final class User {}
+```
+
+#### Listeners with constructor arguments (mixed usage)
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Behavior\EventListeners;
+use Sirix\Cycle\Extension\Listener\ChronosSoftDeleteListener;
+use App\Cycle\Listener\AuditListener;
+
+#[EventListeners(listeners: [
+    ChronosSoftDeleteListener::class,
+    [AuditListener::class, ['timezone' => 'UTC', 'captureOldValues' => true]],
+])]
+final class User {}
+```
+
+Example listener class consuming the named arguments:
+
+```php
+<?php
+
+namespace App\Cycle\Listener;
+
+final class AuditListener
+{
+    public function __construct(
+        private readonly string $timezone = 'UTC',
+        private readonly bool $captureOldValues = false,
+    ) {}
+
+    // Implement handle methods as required by Cycle ORM's listener contracts
+}
+```
+
+For a complete entity example that uses listeners, see the annotated entity example below.
+
 ## Usage Examples
 
 The package includes several example files in the `src/Example` directory that demonstrate how to use its features:
