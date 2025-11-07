@@ -12,6 +12,6 @@ trait HasChronosDeleteTimestampAnnotatedTrait
 {
     use HasChronosDeleteTrait;
 
-    #[Column(type: 'int', unsigned: true)]
+    #[Column(type: 'int', nullable: true, unsigned: true)]
     private ?Chronos $deletedAt = null;
 }

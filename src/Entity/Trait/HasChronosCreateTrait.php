@@ -8,9 +8,9 @@ use Cake\Chronos\Chronos;
 
 trait HasChronosCreateTrait
 {
-    private ?Chronos $createdAt = null;
+    private Chronos $createdAt;
 
-    public function getCreatedAt(): ?Chronos
+    public function getCreatedAt(): Chronos
     {
         return $this->createdAt;
     }

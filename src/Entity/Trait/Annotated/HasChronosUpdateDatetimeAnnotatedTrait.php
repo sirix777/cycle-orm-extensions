@@ -12,6 +12,6 @@ trait HasChronosUpdateDatetimeAnnotatedTrait
 {
     use HasChronosUpdateTrait;
 
-    #[Column(type: 'datetime')]
+    #[Column(type: 'datetime', nullable: true)]
     private ?Chronos $updatedAt = null;
 }

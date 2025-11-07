@@ -11,6 +11,6 @@ trait HasIdIdentifierAnnotatedTrait
 {
     use HasIdIdentifierTrait;
 
-    #[Column(type: 'bigPrimary')]
+    #[Column(type: 'bigPrimary', primary: true)]
     private ?int $id = null;
 }

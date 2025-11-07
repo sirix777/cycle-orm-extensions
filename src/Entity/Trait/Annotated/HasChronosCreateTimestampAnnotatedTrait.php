@@ -13,5 +13,5 @@ trait HasChronosCreateTimestampAnnotatedTrait
     use HasChronosCreateTrait;
 
     #[Column(type: 'int', unsigned: true)]
-    private ?Chronos $createdAt = null;
+    private Chronos $createdAt;
 }
