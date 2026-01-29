@@ -45,4 +45,9 @@ trait HasUuidIdentifierTrait
     {
         return $this->uuid;
     }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
+    }
 }

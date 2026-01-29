@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Money;
 
+use Attribute;
 use Brick\Money\Money;
 use Sirix\Money\CryptoCurrencyCode;
 use Sirix\Money\Exception\SirixMoneyException;
@@ -12,6 +13,7 @@ use Sirix\Money\SirixMoney;
 use Vjik\CycleTypecast\CastContext;
 use Vjik\CycleTypecast\TypeInterface;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class MoneyCurrencyCodeType extends AbstractMoneyType implements TypeInterface
 {
     public function __construct(private readonly CryptoCurrencyCode|FiatCurrencyCode $currencyCode = FiatCurrencyCode::Eur) {}

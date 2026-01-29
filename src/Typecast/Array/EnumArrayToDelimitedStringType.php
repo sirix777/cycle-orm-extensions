@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Array;
 
+use Attribute;
 use BackedEnum;
 use InvalidArgumentException;
 use Vjik\CycleTypecast\CastContext;
@@ -15,6 +16,7 @@ use function implode;
 use function is_array;
 use function is_string;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class EnumArrayToDelimitedStringType implements TypeInterface
 {
     /**

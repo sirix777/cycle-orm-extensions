@@ -17,8 +17,12 @@ use function is_string;
 abstract class AbstractMoneyType implements TypeInterface
 {
     #[Override]
-    public function convertToDatabaseValue(mixed $value, UncastContext $context): string
+    public function convertToDatabaseValue(mixed $value, UncastContext $context): ?string
     {
+        if (null === $value) {
+            return null;
+        }
+
         if (! $value instanceof Money) {
             throw new InvalidArgumentException('Value must be an instance of Money.');
         }
@@ -27,8 +31,12 @@ abstract class AbstractMoneyType implements TypeInterface
     }
 
     #[Override]
-    public function convertToPhpValue(mixed $value, CastContext $context): Money
+    public function convertToPhpValue(mixed $value, CastContext $context): ?Money
     {
+        if (null === $value) {
+            return null;
+        }
+
         if (! is_string($value) && ! is_numeric($value)) {
             throw new InvalidArgumentException('Database value must be a string or numeric.');
         }

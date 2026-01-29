@@ -6,6 +6,7 @@ namespace Sirix\Cycle\Extension\Example;
 
 use Cycle\ORM\Select\Repository;
 use DateTimeInterface;
+use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
 
 /**
@@ -18,10 +19,15 @@ use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
 /**
  * Read-only repository example.
  *
- * @extends Repository<AnnotatedEntityExample>
+ * @extends Repository<AnnotatedEntityWithAttributesExample>
  */
 class ReadRepositoryExample extends AbstractReadRepository
 {
+    public function __construct(SelectFactory $selectFactory)
+    {
+        parent::__construct($selectFactory);
+    }
+
     /**
      * Example of finding entities created after a certain date.
      *
@@ -40,6 +46,6 @@ class ReadRepositoryExample extends AbstractReadRepository
 
     protected function getEntityClass(): string
     {
-        return AnnotatedEntityExample::class;
+        return AnnotatedEntityWithAttributesExample::class;
     }
 }

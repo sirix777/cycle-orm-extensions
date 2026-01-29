@@ -8,12 +8,14 @@ use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Sirix\Cycle\Extension\Behavior\EventListeners;
 use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
-use Sirix\Cycle\Extension\Entity\Trait\Annotated\HasChronosCreateTimestampAnnotatedTrait;
-use Sirix\Cycle\Extension\Entity\Trait\Annotated\HasChronosUpdateTimestampAnnotatedTrait;
-use Sirix\Cycle\Extension\Entity\Trait\Annotated\HasUuidIdentifierAnnotatedTrait;
+use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasChronosCreateTimestampTypecastTrait;
+use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasChronosDeleteTimestampTypecastTrait;
+use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasChronosUpdateTimestampTypecastTrait;
+use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasUuidIdentifierTypecastTrait;
 use Sirix\Cycle\Extension\Listener\ChronosCreateListener;
 use Sirix\Cycle\Extension\Listener\ChronosSoftDeleteListener;
 use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
+use Vjik\CycleTypecast\AttributeTypecastHandler;
 
 /**
  * Example of using annotated traits with Cycle ORM.
@@ -31,9 +33,7 @@ use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
     repository: WriteRepositoryExample::class,
     table: 'users',
     database: 'default',
-    typecast: [
-        AnnotatedEntityExampleTypecastHandler::class,
-    ]
+    typecast: AttributeTypecastHandler::class,
 )]
 #[EventListeners(
     listeners: [
@@ -42,12 +42,13 @@ use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
         ChronosSoftDeleteListener::class,
     ],
 )]
-class AnnotatedEntityExample implements EntityInterface
+class AnnotatedEntityWithAttributesExample implements EntityInterface
 {
     // Include the annotated traits
-    use HasUuidIdentifierAnnotatedTrait;
-    use HasChronosCreateTimestampAnnotatedTrait;
-    use HasChronosUpdateTimestampAnnotatedTrait;
+    use HasUuidIdentifierTypecastTrait;
+    use HasChronosCreateTimestampTypecastTrait;
+    use HasChronosUpdateTimestampTypecastTrait;
+    use HasChronosDeleteTimestampTypecastTrait;
 
     // Define additional properties with annotations
     #[Column(type: 'string')]

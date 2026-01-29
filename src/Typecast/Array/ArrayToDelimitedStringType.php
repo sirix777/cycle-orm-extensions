@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Array;
 
+use Attribute;
 use InvalidArgumentException;
 use Vjik\CycleTypecast\CastContext;
 use Vjik\CycleTypecast\TypeInterface;
@@ -14,6 +15,7 @@ use function implode;
 use function is_array;
 use function is_string;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class ArrayToDelimitedStringType implements TypeInterface
 {
     public function __construct(private readonly string $delimiter = ',') {}

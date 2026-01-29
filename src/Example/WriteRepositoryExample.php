@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Example;
 
+use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Select\Repository;
 use DateTimeInterface;
+use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Sirix\Cycle\Extension\Repository\AbstractWriteRepository;
 
 /**
@@ -18,10 +20,15 @@ use Sirix\Cycle\Extension\Repository\AbstractWriteRepository;
 /**
  * A writing repository example.
  *
- * @extends Repository<AnnotatedEntityExample>
+ * @extends Repository<AnnotatedEntityWithAttributesExample>
  */
 class WriteRepositoryExample extends AbstractWriteRepository
 {
+    public function __construct(ORMInterface $orm, SelectFactory $selectFactory)
+    {
+        parent::__construct($orm, $selectFactory);
+    }
+
     /**
      * Example of finding entities created after a certain date.
      *
@@ -40,6 +47,6 @@ class WriteRepositoryExample extends AbstractWriteRepository
 
     protected function getEntityClass(): string
     {
-        return AnnotatedEntityExample::class;
+        return AnnotatedEntityWithAttributesExample::class;
     }
 }

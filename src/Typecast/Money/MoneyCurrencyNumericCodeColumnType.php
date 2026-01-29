@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Money;
 
+use Attribute;
 use Brick\Money\Money;
 use InvalidArgumentException;
 use Sirix\Money\CurrencyCode;
@@ -14,6 +15,7 @@ use Vjik\CycleTypecast\TypeInterface;
 
 use function array_key_exists;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class MoneyCurrencyNumericCodeColumnType extends AbstractMoneyType implements TypeInterface
 {
     public function __construct(private readonly string $currencyCodeEntityProperty = 'currencyCode') {}

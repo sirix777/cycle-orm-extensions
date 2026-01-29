@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Uuid;
 
+use Attribute;
 use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
@@ -11,6 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 
 use function is_string;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class UuidToBytesType extends AbstractUuidType
 {
     protected function toDatabaseValue(UuidInterface $value): string

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Chronos;
 
+use Attribute;
 use Cake\Chronos\Chronos;
 use InvalidArgumentException;
 
 use function is_int;
 use function is_string;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class ChronosToDateTimeStringType extends AbstractChronosType
 {
     protected function toDatabaseValue(Chronos $value): string

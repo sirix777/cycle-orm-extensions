@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Currency;
 
+use Attribute;
 use Brick\Money\Currency;
 use InvalidArgumentException;
 use Override;
@@ -17,7 +18,8 @@ use Vjik\CycleTypecast\UncastContext;
 use function is_numeric;
 use function is_string;
 
-class CurrencyType implements TypeInterface
+#[Attribute(Attribute::TARGET_PROPERTY)]
+final class CurrencyType implements TypeInterface
 {
     #[Override]
     public function convertToDatabaseValue(mixed $value, UncastContext $context): int

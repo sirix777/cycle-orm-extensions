@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Array;
 
+use Attribute;
 use InvalidArgumentException;
 use JsonException;
 use Vjik\CycleTypecast\CastContext;
@@ -14,6 +15,7 @@ use function is_array;
 use function json_decode;
 use function json_encode;
 
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class ArrayToJsonType implements TypeInterface
 {
     /**
