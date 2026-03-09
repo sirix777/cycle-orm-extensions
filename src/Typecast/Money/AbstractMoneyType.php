@@ -7,9 +7,9 @@ namespace Sirix\Cycle\Extension\Typecast\Money;
 use Brick\Money\Money;
 use InvalidArgumentException;
 use Override;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
 use function is_numeric;
 use function is_string;

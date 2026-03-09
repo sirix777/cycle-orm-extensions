@@ -14,9 +14,9 @@ use function is_a;
 /**
  * @template TEntity of EntityInterface
  */
-final class SelectFactory
+final readonly class SelectFactory
 {
-    public function __construct(private readonly ORMInterface $orm) {}
+    public function __construct(private ORMInterface $orm) {}
 
     /**
      * @param class-string<TEntity> $role

@@ -6,9 +6,9 @@ namespace Sirix\Cycle\Extension\Typecast\Array;
 
 use Attribute;
 use InvalidArgumentException;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
 use function explode;
 use function implode;
@@ -16,9 +16,9 @@ use function is_array;
 use function is_string;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class ArrayToDelimitedStringType implements TypeInterface
+final readonly class ArrayToDelimitedStringType implements TypeInterface
 {
-    public function __construct(private readonly string $delimiter = ',') {}
+    public function __construct(private string $delimiter = ',') {}
 
     public function convertToDatabaseValue(mixed $value, UncastContext $context): ?string
     {

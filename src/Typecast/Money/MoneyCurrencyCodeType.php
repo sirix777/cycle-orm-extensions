@@ -6,12 +6,12 @@ namespace Sirix\Cycle\Extension\Typecast\Money;
 
 use Attribute;
 use Brick\Money\Money;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 use Sirix\Money\CryptoCurrencyCode;
 use Sirix\Money\Exception\SirixMoneyException;
 use Sirix\Money\FiatCurrencyCode;
 use Sirix\Money\SirixMoney;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class MoneyCurrencyCodeType extends AbstractMoneyType implements TypeInterface

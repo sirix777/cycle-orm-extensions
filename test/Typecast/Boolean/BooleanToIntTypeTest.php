@@ -6,8 +6,8 @@ namespace Sirix\Cycle\Extension\Test\Typecast\Boolean;
 
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Boolean\BooleanToIntType;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 
 final class BooleanToIntTypeTest extends TestCase
 {

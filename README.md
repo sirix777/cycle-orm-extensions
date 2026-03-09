@@ -21,7 +21,7 @@ This package provides a collection of practical extensions for [Cycle ORM](https
 
 ## Requirements
 
-- PHP 8.1, 8.2, 8.3, or 8.4
+- PHP 8.2, 8.3, 8.4, or 8.5
 - Cycle ORM 2.10+
 - Ramsey UUID 4.7+
 
@@ -76,6 +76,8 @@ The `SelectFactory` is a utility class used by repositories to create `Cycle\ORM
 In your application, you should register `SelectFactory` in your dependency injection container. Registration example:
 
 ```php
+<?php
+
 use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Cycle\ORM\ORMInterface;
 
@@ -86,6 +88,8 @@ $selectFactory = new SelectFactory($orm);
 Repositories provided by this package require `SelectFactory` in their constructor:
 
 ```php
+<?php
+
 use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
 use Sirix\Cycle\Extension\Factory\SelectFactory;
 
@@ -105,18 +109,21 @@ class MyRepository extends AbstractReadRepository
 
 ### Typecasts
 
-Custom typecasts for various data types, implemented as [vjik/cycle-typecast](https://github.com/vjik/cycle-typecast) types.
+Custom typecasts for various data types, implemented as internal package types.
+The architecture is inspired by [vjik/cycle-typecast](https://github.com/vjik/cycle-typecast).
 
 #### Annotation-based Typecasting
 
 The package supports typecasting via PHP 8 attributes. This allows you to define typecasting logic directly on entity properties.
 
-To use this feature, you need to configure `Vjik\CycleTypecast\AttributeTypecastHandler` for your entity and use the provided type attributes:
+To use this feature, you need to configure `Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler` for your entity and use the provided type attributes:
 
 ```php
+<?php
+
 use Cycle\Annotated\Annotation\Entity;
 use Sirix\Cycle\Extension\Typecast\Uuid\UuidToStringType;
-use Vjik\CycleTypecast\AttributeTypecastHandler;
+use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
 use Ramsey\Uuid\UuidInterface;
 
 #[Entity(
@@ -128,6 +135,9 @@ class User
     private UuidInterface $uuid;
 }
 ```
+
+This mode uses property-level typecast attributes (like `#[UuidToStringType]`) together with
+`Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler`.
 
 Available type attributes:
 
@@ -141,6 +151,181 @@ Available type attributes:
     - `#[ChronosToTimestampType]` - Converts Chronos to UNIX timestamp (string/int).
     - `#[ChronosToDateTimeStringType]` - Converts Chronos to 'Y-m-d H:i:s' string.
     - `#[ChronosToDateStringType]` - Converts Chronos to 'Y-m-d' string.
+
+#### Native Cycle Field Typecast for Chronos
+
+For schema-builder configurations, you can use native Cycle field-level typecast callbacks:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+$entity->getFields()->set(
+    'updatedAt',
+    (new Field())
+        ->setType('datetime')
+        ->setColumn('updated_at')
+        ->setTypecast([ChronosNativeTypecast::class, 'toChronos']),
+);
+```
+
+For timestamp columns:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+$entity->getFields()->set(
+    'updatedAt',
+    (new Field())
+        ->setType('int')
+        ->setColumn('updated_at')
+        ->setTypecast([ChronosNativeTypecast::class, 'toChronosFromTimestamp']),
+);
+```
+
+#### Native Typecaster in Annotated Entity
+
+You can also configure native Cycle typecast rules on an annotated entity:
+
+```php
+<?php
+
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+#[Entity(typecast: [
+    'createdAt' => [ChronosNativeTypecast::class, 'toChronos'],
+    'updatedAt' => [ChronosNativeTypecast::class, 'toChronos'],
+    'deletedAt' => [ChronosNativeTypecast::class, 'toChronos'],
+])]
+final class User
+{
+    #[Column(type: 'datetime')]
+    private \Cake\Chronos\Chronos $createdAt;
+
+    #[Column(type: 'datetime', nullable: true)]
+    private ?\Cake\Chronos\Chronos $updatedAt = null;
+
+    #[Column(type: 'datetime', nullable: true)]
+    private ?\Cake\Chronos\Chronos $deletedAt = null;
+}
+```
+
+You can configure native rules directly at `#[Column(..., typecast: ...)]` level as well:
+
+```php
+<?php
+
+use Cake\Chronos\Chronos;
+use Cycle\Annotated\Annotation\Column;
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+final class User
+{
+    #[Column(type: 'datetime', typecast: [ChronosNativeTypecast::class, 'toChronos'])]
+    private Chronos $createdAt;
+}
+```
+
+#### Native Cycle Field Typecast for UUID
+
+For UUID fields in schema-builder, use native field-level callbacks:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast;
+
+$entity->getFields()->set(
+    'uuid',
+    (new Field())
+        ->setType('uuid')
+        ->setColumn('uuid')
+        ->setTypecast([UuidNativeTypecast::class, 'toUuidFromString']),
+);
+```
+
+For binary UUID(16) storage:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast;
+
+$entity->getFields()->set(
+    'uuid',
+    (new Field())
+        ->setType('binary')
+        ->setColumn('uuid')
+        ->setTypecast([UuidNativeTypecast::class, 'toUuidFromBytes']),
+);
+```
+
+#### Native Cycle Field Typecast for Other Types
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Array\ArrayNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Boolean\BooleanNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Currency\CurrencyNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\CurrencyCode\CurrencyCodeNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Money\MoneyNativeTypecast;
+
+// bool
+$field->setTypecast([BooleanNativeTypecast::class, 'toBool']);
+
+// array from JSON
+$field->setTypecast([ArrayNativeTypecast::class, 'toArrayFromJson']);
+
+// array from delimited string
+$field->setTypecast([ArrayNativeTypecast::class, 'toArrayFromDelimitedString', ['|']]);
+
+// currency (numeric code -> Brick\Money\Currency)
+$field->setTypecast([CurrencyNativeTypecast::class, 'toCurrency']);
+
+// currency code (numeric code -> FiatCurrencyCode|CryptoCurrencyCode)
+$field->setTypecast([CurrencyCodeNativeTypecast::class, 'toCurrencyCode']);
+
+// money with fixed currency code
+$field->setTypecast([MoneyNativeTypecast::class, 'toMoneyByCurrencyCode', ['USD']]);
+
+// money with fixed numeric currency code
+$field->setTypecast([MoneyNativeTypecast::class, 'toMoneyByNumericCode', [840]]);
+```
+
+Limitation:
+- Native Cycle callbacks do not have row-level context, so column-dependent money conversions
+  (analogues of `MoneyCurrencyNumericCodeColumnType` and `MoneyMinorCurrencyNumericCodeColumnType`)
+  should continue using custom typecast handlers.
+
+Important:
+- Native `*NativeTypecast` classes are callback providers for Cycle rules.
+- They are not property attributes and should not be used as `#[SomeNativeTypecast]`.
+
+### Decision Matrix: Native vs Handler
+
+Use this matrix when selecting typecast approach:
+
+| Type / Scenario | Preferred | Notes |
+|---|---|---|
+| Chronos (`datetime` / `timestamp`) | Native | Use `ChronosNativeTypecast::*` callbacks. |
+| UUID (`uuid` / `binary(16)`) | Native | Use `UuidNativeTypecast::toUuidFromString` or `toUuidFromBytes`. |
+| Boolean | Native | Use `BooleanNativeTypecast::toBool`. |
+| Array / JSON / Delimited array | Native | Use `ArrayNativeTypecast::*`. |
+| Currency / CurrencyCode | Native | Use `CurrencyNativeTypecast::toCurrency`, `CurrencyCodeNativeTypecast::toCurrencyCode`. |
+| Money with fixed currency (known in config) | Native | Use `MoneyNativeTypecast::*` with fixed code argument. |
+| Money dependent on another entity field (e.g. currency column) | Handler | Requires row-level context (`$context->data`). |
+| Any conversion requiring access to multiple fields | Handler | Use `TypecastHandler` / `AttributeTypecastHandler`. |
+| Property-level attribute style (`#[SomeType]`) | Handler | Requires `AttributeTypecastHandler`. |
+
+Practical rule:
+- Start with native callbacks.
+- Switch to handler when conversion needs context, bidirectional custom behavior, or property attributes.
 - **Currency (Brick\Money)**:
     - `#[CurrencyType]` - Converts `Brick\Money\Currency` to numeric code.
     - `#[CurrencyCodeType]` - Converts `Sirix\Money\CurrencyCode` (fiat/crypto) to value.
@@ -228,6 +413,52 @@ final class AuditListener
 
 For a complete entity example that uses listeners, see the annotated entity example below.
 
+### Chronos Schema Modifiers (Cycle-style)
+
+For schema-builder configuration (`Cycle\Schema\Definition\Entity`), the package provides Cycle-style modifiers that wrap Chronos listeners and listener args:
+
+- `ChronosCreatedAt(field: 'createdAt', column: 'created_at')`
+- `ChronosUpdatedAt(field: 'updatedAt', column: 'updated_at', nullable: true)`
+- `ChronosSoftDelete(field: 'deletedAt', column: 'deleted_at')`
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Behavior\ChronosCreatedAt;
+use Sirix\Cycle\Extension\Behavior\ChronosSoftDelete;
+use Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt;
+
+$entity->addSchemaModifier(new ChronosCreatedAt(field: 'createdAt', column: 'created_at'));
+$entity->addSchemaModifier(new ChronosUpdatedAt(field: 'updatedAt', column: 'updated_at', nullable: true));
+$entity->addSchemaModifier(new ChronosSoftDelete(field: 'deletedAt', column: 'deleted_at'));
+```
+
+Notes:
+- `nullable: true` in `ChronosUpdatedAt` keeps `updatedAt` as `null` on create and sets it only on real update.
+- These modifiers are recommended instead of manual `new EventListener(Chronos*Listener::class, ...)` wiring in schema-builder code.
+
+#### Annotated Entity Example
+
+The same modifiers can be used as attributes on an annotated entity:
+
+```php
+<?php
+
+use Cycle\Annotated\Annotation\Entity;
+use Sirix\Cycle\Extension\Behavior\ChronosCreatedAt;
+use Sirix\Cycle\Extension\Behavior\ChronosSoftDelete;
+use Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt;
+
+#[Entity]
+#[ChronosCreatedAt(field: 'createdAt', column: 'created_at')]
+#[ChronosUpdatedAt(field: 'updatedAt', column: 'updated_at', nullable: true)]
+#[ChronosSoftDelete(field: 'deletedAt', column: 'deleted_at')]
+final class User
+{
+    // Entity fields...
+}
+```
+
 ## Usage Examples
 
 The package includes several example files in the `src/Example` directory that demonstrate how to use its features:
@@ -259,7 +490,7 @@ use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasUuidIdentifierTypec
 use Sirix\Cycle\Extension\Listener\ChronosCreateListener;
 use Sirix\Cycle\Extension\Listener\ChronosSoftDeleteListener;
 use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
-use Vjik\CycleTypecast\AttributeTypecastHandler;
+use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
 
 #[Entity(
     repository: WriteRepositoryExample::class,
@@ -429,7 +660,6 @@ The package suggests the following dependencies for additional functionality:
 - `cycle/annotated`: Required for annotated entity support
 - `cycle/entity-behavior`: Required for entity behaviors and lifecycle hooks support
 - `sirix/money`: Required for Money and Currency typecast support
-- `vjik/cycle-typecast`: Required for Typecast support
 
 ## License
 

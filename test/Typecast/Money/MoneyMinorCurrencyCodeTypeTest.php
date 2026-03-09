@@ -8,8 +8,8 @@ use Brick\Money\Money;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Money\MoneyMinorCurrencyCodeType;
 use Sirix\Money\FiatCurrencyCode;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 
 final class MoneyMinorCurrencyCodeTypeTest extends TestCase
 {

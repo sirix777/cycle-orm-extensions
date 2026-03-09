@@ -6,6 +6,46 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.0.0] - 2026-03-09
+
+### Added
+- Added Cycle-style Chronos schema modifiers for schema-builder usage:
+  - `Sirix\Cycle\Extension\Behavior\ChronosCreatedAt`
+  - `Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt`
+  - `Sirix\Cycle\Extension\Behavior\ChronosSoftDelete`
+- Added native Cycle-compatible Chronos field typecast callbacks:
+  - `Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast::toChronos`
+  - `Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast::toChronosFromTimestamp`
+- Added native Cycle-compatible UUID field typecast callbacks:
+  - `Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast::toUuid`
+  - `Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast::toUuidFromString`
+  - `Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast::toUuidFromBytes`
+- Added native Cycle-compatible callbacks for remaining value groups:
+  - `Sirix\Cycle\Extension\Typecast\Array\ArrayNativeTypecast::*`
+  - `Sirix\Cycle\Extension\Typecast\Boolean\BooleanNativeTypecast::toBool`
+  - `Sirix\Cycle\Extension\Typecast\Currency\CurrencyNativeTypecast::toCurrency`
+  - `Sirix\Cycle\Extension\Typecast\CurrencyCode\CurrencyCodeNativeTypecast::toCurrencyCode`
+  - `Sirix\Cycle\Extension\Typecast\Money\MoneyNativeTypecast::*`
+- Added unit tests for new Chronos schema modifiers.
+
+### Breaking Changes
+- Replaced external `vjik/cycle-typecast` integration with an internal typecast layer (`TypeInterface`, contexts, handlers).
+- Public typecast contracts now use `Sirix\Cycle\Extension\Typecast\*` namespaces instead of `Vjik\CycleTypecast\*`.
+- Removed `vjik/cycle-typecast` from `composer.json` (`require-dev` and `suggest`).
+
+### Changed
+- Updated typecast classes, examples, tests, and README to use `Sirix\Cycle\Extension\Typecast\*` contracts and handlers.
+
+### Upgrade Guide
+1. Replace `Vjik\CycleTypecast\AttributeTypecastHandler` with `Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler`.
+2. Replace `Vjik\CycleTypecast\TypecastHandler` with `Sirix\Cycle\Extension\Typecast\Handler\TypecastHandler`.
+3. Replace `Vjik\CycleTypecast\TypeInterface` with `Sirix\Cycle\Extension\Typecast\Contract\TypeInterface`.
+4. Replace `Vjik\CycleTypecast\CastContext` and `Vjik\CycleTypecast\UncastContext` with internal context classes under `Sirix\Cycle\Extension\Typecast\Context\*`.
+
+### Acknowledgements
+- Internal typecast architecture is inspired by `vjik/cycle-typecast` by Sergei Predvoditelev.
+
+
 ## [2.2.0] - 2026-01-29
 
 ### Added

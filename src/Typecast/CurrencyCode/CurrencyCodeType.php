@@ -7,13 +7,13 @@ namespace Sirix\Cycle\Extension\Typecast\CurrencyCode;
 use Attribute;
 use InvalidArgumentException;
 use Override;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 use Sirix\Money\CryptoCurrencyCode;
 use Sirix\Money\CurrencyCode;
 use Sirix\Money\Exception\SirixMoneyException;
 use Sirix\Money\FiatCurrencyCode;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
 
 use function is_numeric;
 use function is_string;

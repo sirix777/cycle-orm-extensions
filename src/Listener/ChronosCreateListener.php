@@ -8,9 +8,9 @@ use Cake\Chronos\Chronos;
 use Cycle\ORM\Entity\Behavior\Attribute\Listen;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command\OnCreate;
 
-final class ChronosCreateListener
+final readonly class ChronosCreateListener
 {
-    public function __construct(private readonly string $field = 'createdAt') {}
+    public function __construct(private string $field = 'createdAt') {}
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void

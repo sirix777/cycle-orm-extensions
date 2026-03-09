@@ -7,9 +7,9 @@ namespace Sirix\Cycle\Extension\Typecast\Array;
 use Attribute;
 use InvalidArgumentException;
 use JsonException;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
 use function is_array;
 use function json_decode;
