@@ -148,6 +148,69 @@ Available type attributes:
     - `#[ChronosToTimestampType]` - Converts Chronos to UNIX timestamp (string/int).
     - `#[ChronosToDateTimeStringType]` - Converts Chronos to 'Y-m-d H:i:s' string.
     - `#[ChronosToDateStringType]` - Converts Chronos to 'Y-m-d' string.
+
+#### Native Cycle Field Typecast for Chronos
+
+For schema-builder configurations, you can use native Cycle field-level typecast callbacks:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+$entity->getFields()->set(
+    'updatedAt',
+    (new Field())
+        ->setType('datetime')
+        ->setColumn('updated_at')
+        ->setTypecast([ChronosNativeTypecast::class, 'toChronos']),
+);
+```
+
+For timestamp columns:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+$entity->getFields()->set(
+    'updatedAt',
+    (new Field())
+        ->setType('int')
+        ->setColumn('updated_at')
+        ->setTypecast([ChronosNativeTypecast::class, 'toChronosFromTimestamp']),
+);
+```
+
+#### Native Typecaster in Annotated Entity
+
+You can also configure native Cycle typecast rules on an annotated entity:
+
+```php
+<?php
+
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+#[Entity(typecast: [
+    'createdAt' => [ChronosNativeTypecast::class, 'toChronos'],
+    'updatedAt' => [ChronosNativeTypecast::class, 'toChronos'],
+    'deletedAt' => [ChronosNativeTypecast::class, 'toChronos'],
+])]
+final class User
+{
+    #[Column(type: 'datetime')]
+    private \Cake\Chronos\Chronos $createdAt;
+
+    #[Column(type: 'datetime', nullable: true)]
+    private ?\Cake\Chronos\Chronos $updatedAt = null;
+
+    #[Column(type: 'datetime', nullable: true)]
+    private ?\Cake\Chronos\Chronos $deletedAt = null;
+}
+```
 - **Currency (Brick\Money)**:
     - `#[CurrencyType]` - Converts `Brick\Money\Currency` to numeric code.
     - `#[CurrencyCodeType]` - Converts `Sirix\Money\CurrencyCode` (fiat/crypto) to value.

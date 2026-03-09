@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Sirix\Cycle\Extension\Behavior\ChronosCreatedAt`
   - `Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt`
   - `Sirix\Cycle\Extension\Behavior\ChronosSoftDelete`
+- Added native Cycle-compatible Chronos field typecast callbacks:
+  - `Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast::toChronos`
+  - `Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast::toChronosFromTimestamp`
 - Added unit tests for new Chronos schema modifiers.
 
 ### Breaking Changes
