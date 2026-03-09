@@ -13,12 +13,12 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use function is_string;
 
 #[Attribute(Attribute::TARGET_CLASS), NamedArgumentConstructor]
-final class EventListeners implements SchemaModifierInterface
+final readonly class EventListeners implements SchemaModifierInterface
 {
     /**
      * @param array<array{0: class-string, 1: array<string, mixed>}|class-string> $listeners
      */
-    public function __construct(private readonly array $listeners) {}
+    public function __construct(private array $listeners) {}
 
     public function compute(Registry $registry): void {}
 

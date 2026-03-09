@@ -10,9 +10,9 @@ use Cycle\ORM\Entity\Behavior\Attribute\Listen;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command\OnDelete;
 use Cycle\ORM\Heap\Node;
 
-final class ChronosSoftDeleteListener
+final readonly class ChronosSoftDeleteListener
 {
-    public function __construct(private readonly string $field = 'deletedAt') {}
+    public function __construct(private string $field = 'deletedAt') {}
 
     #[Listen(OnDelete::class)]
     public function __invoke(OnDelete $event): void

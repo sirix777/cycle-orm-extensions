@@ -21,7 +21,7 @@ This package provides a collection of practical extensions for [Cycle ORM](https
 
 ## Requirements
 
-- PHP 8.1, 8.2, 8.3, or 8.4
+- PHP 8.2, 8.3, 8.4, or 8.5
 - Cycle ORM 2.10+
 - Ramsey UUID 4.7+
 
@@ -105,18 +105,19 @@ class MyRepository extends AbstractReadRepository
 
 ### Typecasts
 
-Custom typecasts for various data types, implemented as [vjik/cycle-typecast](https://github.com/vjik/cycle-typecast) types.
+Custom typecasts for various data types, implemented as internal package types.
+The architecture is inspired by [vjik/cycle-typecast](https://github.com/vjik/cycle-typecast).
 
 #### Annotation-based Typecasting
 
 The package supports typecasting via PHP 8 attributes. This allows you to define typecasting logic directly on entity properties.
 
-To use this feature, you need to configure `Vjik\CycleTypecast\AttributeTypecastHandler` for your entity and use the provided type attributes:
+To use this feature, you need to configure `Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler` for your entity and use the provided type attributes:
 
 ```php
 use Cycle\Annotated\Annotation\Entity;
 use Sirix\Cycle\Extension\Typecast\Uuid\UuidToStringType;
-use Vjik\CycleTypecast\AttributeTypecastHandler;
+use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
 use Ramsey\Uuid\UuidInterface;
 
 #[Entity(
@@ -259,7 +260,7 @@ use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasUuidIdentifierTypec
 use Sirix\Cycle\Extension\Listener\ChronosCreateListener;
 use Sirix\Cycle\Extension\Listener\ChronosSoftDeleteListener;
 use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
-use Vjik\CycleTypecast\AttributeTypecastHandler;
+use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
 
 #[Entity(
     repository: WriteRepositoryExample::class,
@@ -429,7 +430,6 @@ The package suggests the following dependencies for additional functionality:
 - `cycle/annotated`: Required for annotated entity support
 - `cycle/entity-behavior`: Required for entity behaviors and lifecycle hooks support
 - `sirix/money`: Required for Money and Currency typecast support
-- `vjik/cycle-typecast`: Required for Typecast support
 
 ## License
 

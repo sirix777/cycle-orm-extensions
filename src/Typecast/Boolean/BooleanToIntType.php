@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Boolean;
 
 use Attribute;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class BooleanToIntType implements TypeInterface

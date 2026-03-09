@@ -15,7 +15,7 @@ use Sirix\Cycle\Extension\Entity\Trait\Annotated\Typecast\HasUuidIdentifierTypec
 use Sirix\Cycle\Extension\Listener\ChronosCreateListener;
 use Sirix\Cycle\Extension\Listener\ChronosSoftDeleteListener;
 use Sirix\Cycle\Extension\Listener\ChronosUpdateListener;
-use Vjik\CycleTypecast\AttributeTypecastHandler;
+use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
 
 /**
  * Example of using annotated traits with Cycle ORM.

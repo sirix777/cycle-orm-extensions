@@ -8,8 +8,8 @@ use Cake\Chronos\Chronos;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Chronos\ChronosToTimestampType;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 
 final class ChronosToTimestampTypeTest extends TestCase
 {

@@ -10,8 +10,8 @@ use Sirix\Cycle\Extension\Typecast\CurrencyCode\CurrencyCodeType;
 use Sirix\Money\CurrencyCode;
 use Sirix\Money\FiatCurrencyCode;
 use Sirix\Money\CryptoCurrencyCode;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 
 final class CurrencyCodeTypeTest extends TestCase
 {

@@ -6,9 +6,9 @@ namespace Sirix\Cycle\Extension\Typecast\Chronos;
 
 use Cake\Chronos\Chronos;
 use InvalidArgumentException;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
 abstract class AbstractChronosType implements TypeInterface
 {

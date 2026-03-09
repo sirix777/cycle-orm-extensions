@@ -8,8 +8,8 @@ use Brick\Money\Currency;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Currency\CurrencyType;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 
 final class CurrencyTypeTest extends TestCase
 {

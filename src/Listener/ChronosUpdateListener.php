@@ -10,9 +10,9 @@ use Cycle\ORM\Entity\Behavior\Attribute\Listen;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command\OnCreate;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command\OnUpdate;
 
-final class ChronosUpdateListener
+final readonly class ChronosUpdateListener
 {
-    public function __construct(private readonly string $field = 'updatedAt', private readonly bool $nullable = false) {}
+    public function __construct(private string $field = 'updatedAt', private bool $nullable = false) {}
 
     #[Listen(OnUpdate::class)]
     public function __invoke(OnUpdate $event): void

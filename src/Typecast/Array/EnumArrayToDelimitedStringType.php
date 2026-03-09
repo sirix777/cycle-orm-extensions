@@ -7,9 +7,9 @@ namespace Sirix\Cycle\Extension\Typecast\Array;
 use Attribute;
 use BackedEnum;
 use InvalidArgumentException;
-use Vjik\CycleTypecast\CastContext;
-use Vjik\CycleTypecast\TypeInterface;
-use Vjik\CycleTypecast\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Context\CastContext;
+use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
+use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
 use function explode;
 use function implode;
@@ -17,12 +17,12 @@ use function is_array;
 use function is_string;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class EnumArrayToDelimitedStringType implements TypeInterface
+final readonly class EnumArrayToDelimitedStringType implements TypeInterface
 {
     /**
      * @param class-string<BackedEnum> $enumClass
      */
-    public function __construct(private readonly string $enumClass, private readonly string $delimiter = ',') {}
+    public function __construct(private string $enumClass, private string $delimiter = ',') {}
 
     public function convertToDatabaseValue(mixed $value, UncastContext $context): ?string
     {
