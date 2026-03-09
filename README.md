@@ -306,6 +306,26 @@ Limitation:
 Important:
 - Native `*NativeTypecast` classes are callback providers for Cycle rules.
 - They are not property attributes and should not be used as `#[SomeNativeTypecast]`.
+
+### Decision Matrix: Native vs Handler
+
+Use this matrix when selecting typecast approach:
+
+| Type / Scenario | Preferred | Notes |
+|---|---|---|
+| Chronos (`datetime` / `timestamp`) | Native | Use `ChronosNativeTypecast::*` callbacks. |
+| UUID (`uuid` / `binary(16)`) | Native | Use `UuidNativeTypecast::toUuidFromString` or `toUuidFromBytes`. |
+| Boolean | Native | Use `BooleanNativeTypecast::toBool`. |
+| Array / JSON / Delimited array | Native | Use `ArrayNativeTypecast::*`. |
+| Currency / CurrencyCode | Native | Use `CurrencyNativeTypecast::toCurrency`, `CurrencyCodeNativeTypecast::toCurrencyCode`. |
+| Money with fixed currency (known in config) | Native | Use `MoneyNativeTypecast::*` with fixed code argument. |
+| Money dependent on another entity field (e.g. currency column) | Handler | Requires row-level context (`$context->data`). |
+| Any conversion requiring access to multiple fields | Handler | Use `TypecastHandler` / `AttributeTypecastHandler`. |
+| Property-level attribute style (`#[SomeType]`) | Handler | Requires `AttributeTypecastHandler`. |
+
+Practical rule:
+- Start with native callbacks.
+- Switch to handler when conversion needs context, bidirectional custom behavior, or property attributes.
 - **Currency (Brick\Money)**:
     - `#[CurrencyType]` - Converts `Brick\Money\Currency` to numeric code.
     - `#[CurrencyCodeType]` - Converts `Sirix\Money\CurrencyCode` (fiat/crypto) to value.
