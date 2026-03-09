@@ -136,6 +136,9 @@ class User
 }
 ```
 
+This mode uses property-level typecast attributes (like `#[UuidToStringType]`) together with
+`Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler`.
+
 Available type attributes:
 
 - **Arrays**:
@@ -211,6 +214,98 @@ final class User
     private ?\Cake\Chronos\Chronos $deletedAt = null;
 }
 ```
+
+You can configure native rules directly at `#[Column(..., typecast: ...)]` level as well:
+
+```php
+<?php
+
+use Cake\Chronos\Chronos;
+use Cycle\Annotated\Annotation\Column;
+use Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast;
+
+final class User
+{
+    #[Column(type: 'datetime', typecast: [ChronosNativeTypecast::class, 'toChronos'])]
+    private Chronos $createdAt;
+}
+```
+
+#### Native Cycle Field Typecast for UUID
+
+For UUID fields in schema-builder, use native field-level callbacks:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast;
+
+$entity->getFields()->set(
+    'uuid',
+    (new Field())
+        ->setType('uuid')
+        ->setColumn('uuid')
+        ->setTypecast([UuidNativeTypecast::class, 'toUuidFromString']),
+);
+```
+
+For binary UUID(16) storage:
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast;
+
+$entity->getFields()->set(
+    'uuid',
+    (new Field())
+        ->setType('binary')
+        ->setColumn('uuid')
+        ->setTypecast([UuidNativeTypecast::class, 'toUuidFromBytes']),
+);
+```
+
+#### Native Cycle Field Typecast for Other Types
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Typecast\Array\ArrayNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Boolean\BooleanNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Currency\CurrencyNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\CurrencyCode\CurrencyCodeNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Money\MoneyNativeTypecast;
+
+// bool
+$field->setTypecast([BooleanNativeTypecast::class, 'toBool']);
+
+// array from JSON
+$field->setTypecast([ArrayNativeTypecast::class, 'toArrayFromJson']);
+
+// array from delimited string
+$field->setTypecast([ArrayNativeTypecast::class, 'toArrayFromDelimitedString', ['|']]);
+
+// currency (numeric code -> Brick\Money\Currency)
+$field->setTypecast([CurrencyNativeTypecast::class, 'toCurrency']);
+
+// currency code (numeric code -> FiatCurrencyCode|CryptoCurrencyCode)
+$field->setTypecast([CurrencyCodeNativeTypecast::class, 'toCurrencyCode']);
+
+// money with fixed currency code
+$field->setTypecast([MoneyNativeTypecast::class, 'toMoneyByCurrencyCode', ['USD']]);
+
+// money with fixed numeric currency code
+$field->setTypecast([MoneyNativeTypecast::class, 'toMoneyByNumericCode', [840]]);
+```
+
+Limitation:
+- Native Cycle callbacks do not have row-level context, so column-dependent money conversions
+  (analogues of `MoneyCurrencyNumericCodeColumnType` and `MoneyMinorCurrencyNumericCodeColumnType`)
+  should continue using custom typecast handlers.
+
+Important:
+- Native `*NativeTypecast` classes are callback providers for Cycle rules.
+- They are not property attributes and should not be used as `#[SomeNativeTypecast]`.
 - **Currency (Brick\Money)**:
     - `#[CurrencyType]` - Converts `Brick\Money\Currency` to numeric code.
     - `#[CurrencyCodeType]` - Converts `Sirix\Money\CurrencyCode` (fiat/crypto) to value.

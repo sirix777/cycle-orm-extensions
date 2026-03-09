@@ -16,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added native Cycle-compatible Chronos field typecast callbacks:
   - `Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast::toChronos`
   - `Sirix\Cycle\Extension\Typecast\Chronos\ChronosNativeTypecast::toChronosFromTimestamp`
+- Added native Cycle-compatible UUID field typecast callbacks:
+  - `Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast::toUuid`
+  - `Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast::toUuidFromString`
+  - `Sirix\Cycle\Extension\Typecast\Uuid\UuidNativeTypecast::toUuidFromBytes`
+- Added native Cycle-compatible callbacks for remaining value groups:
+  - `Sirix\Cycle\Extension\Typecast\Array\ArrayNativeTypecast::*`
+  - `Sirix\Cycle\Extension\Typecast\Boolean\BooleanNativeTypecast::toBool`
+  - `Sirix\Cycle\Extension\Typecast\Currency\CurrencyNativeTypecast::toCurrency`
+  - `Sirix\Cycle\Extension\Typecast\CurrencyCode\CurrencyCodeNativeTypecast::toCurrencyCode`
+  - `Sirix\Cycle\Extension\Typecast\Money\MoneyNativeTypecast::*`
 - Added unit tests for new Chronos schema modifiers.
 
 ### Breaking Changes
