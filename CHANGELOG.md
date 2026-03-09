@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added Cycle-style Chronos schema modifiers for schema-builder usage:
+  - `Sirix\Cycle\Extension\Behavior\ChronosCreatedAt`
+  - `Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt`
+  - `Sirix\Cycle\Extension\Behavior\ChronosSoftDelete`
+- Added unit tests for new Chronos schema modifiers.
+
 ### Breaking Changes
 - Replaced external `vjik/cycle-typecast` integration with an internal typecast layer (`TypeInterface`, contexts, handlers).
 - Public typecast contracts now use `Sirix\Cycle\Extension\Typecast\*` namespaces instead of `Vjik\CycleTypecast\*`.

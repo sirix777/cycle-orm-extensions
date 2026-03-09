@@ -76,6 +76,8 @@ The `SelectFactory` is a utility class used by repositories to create `Cycle\ORM
 In your application, you should register `SelectFactory` in your dependency injection container. Registration example:
 
 ```php
+<?php
+
 use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Cycle\ORM\ORMInterface;
 
@@ -86,6 +88,8 @@ $selectFactory = new SelectFactory($orm);
 Repositories provided by this package require `SelectFactory` in their constructor:
 
 ```php
+<?php
+
 use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
 use Sirix\Cycle\Extension\Factory\SelectFactory;
 
@@ -115,6 +119,8 @@ The package supports typecasting via PHP 8 attributes. This allows you to define
 To use this feature, you need to configure `Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler` for your entity and use the provided type attributes:
 
 ```php
+<?php
+
 use Cycle\Annotated\Annotation\Entity;
 use Sirix\Cycle\Extension\Typecast\Uuid\UuidToStringType;
 use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
@@ -228,6 +234,52 @@ final class AuditListener
 ```
 
 For a complete entity example that uses listeners, see the annotated entity example below.
+
+### Chronos Schema Modifiers (Cycle-style)
+
+For schema-builder configuration (`Cycle\Schema\Definition\Entity`), the package provides Cycle-style modifiers that wrap Chronos listeners and listener args:
+
+- `ChronosCreatedAt(field: 'createdAt', column: 'created_at')`
+- `ChronosUpdatedAt(field: 'updatedAt', column: 'updated_at', nullable: true)`
+- `ChronosSoftDelete(field: 'deletedAt', column: 'deleted_at')`
+
+```php
+<?php
+
+use Sirix\Cycle\Extension\Behavior\ChronosCreatedAt;
+use Sirix\Cycle\Extension\Behavior\ChronosSoftDelete;
+use Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt;
+
+$entity->addSchemaModifier(new ChronosCreatedAt(field: 'createdAt', column: 'created_at'));
+$entity->addSchemaModifier(new ChronosUpdatedAt(field: 'updatedAt', column: 'updated_at', nullable: true));
+$entity->addSchemaModifier(new ChronosSoftDelete(field: 'deletedAt', column: 'deleted_at'));
+```
+
+Notes:
+- `nullable: true` in `ChronosUpdatedAt` keeps `updatedAt` as `null` on create and sets it only on real update.
+- These modifiers are recommended instead of manual `new EventListener(Chronos*Listener::class, ...)` wiring in schema-builder code.
+
+#### Annotated Entity Example
+
+The same modifiers can be used as attributes on an annotated entity:
+
+```php
+<?php
+
+use Cycle\Annotated\Annotation\Entity;
+use Sirix\Cycle\Extension\Behavior\ChronosCreatedAt;
+use Sirix\Cycle\Extension\Behavior\ChronosSoftDelete;
+use Sirix\Cycle\Extension\Behavior\ChronosUpdatedAt;
+
+#[Entity]
+#[ChronosCreatedAt(field: 'createdAt', column: 'created_at')]
+#[ChronosUpdatedAt(field: 'updatedAt', column: 'updated_at', nullable: true)]
+#[ChronosSoftDelete(field: 'deletedAt', column: 'deleted_at')]
+final class User
+{
+    // Entity fields...
+}
+```
 
 ## Usage Examples
 
