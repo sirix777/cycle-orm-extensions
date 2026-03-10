@@ -147,6 +147,9 @@ Available type attributes:
     - `#[ArrayToJsonType]` - Converts array to JSON string.
 - **Boolean**:
     - `#[BooleanToIntType]` - Converts boolean to integer (0 or 1).
+- **Enums (BackedEnum)**:
+    - `#[IntegerEnumType(enumClass: MyIntEnum::class)]` - Converts int-backed enum to integer value and back.
+    - `#[StringEnumType(enumClass: MyStringEnum::class)]` - Converts string-backed enum to string value and back.
 - **Chronos (CakePHP Chronos)**:
     - `#[ChronosToTimestampType]` - Converts Chronos to UNIX timestamp (string/int).
     - `#[ChronosToDateTimeStringType]` - Converts Chronos to 'Y-m-d H:i:s' string.
