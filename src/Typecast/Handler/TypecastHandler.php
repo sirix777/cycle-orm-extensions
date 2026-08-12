@@ -30,7 +30,7 @@ abstract class TypecastHandler implements CastableInterface, UncastableInterface
 
     final public function __construct()
     {
-        $this->config = $this->getConfig();
+        $this->config        = $this->getConfig();
         $this->supportedKeys = array_keys($this->config);
     }
 

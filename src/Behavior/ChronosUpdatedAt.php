@@ -40,7 +40,7 @@ final readonly class ChronosUpdatedAt implements SchemaModifierInterface
         $schema[SchemaInterface::LISTENERS][] = [
             ChronosUpdateListener::class,
             [
-                'field' => $this->field,
+                'field'    => $this->field,
                 'nullable' => $this->nullable,
             ],
         ];

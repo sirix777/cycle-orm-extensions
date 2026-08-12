@@ -13,7 +13,7 @@ class AnnotatedEntityExampleTypecastHandler extends TypecastHandler
     protected function getConfig(): array
     {
         return [
-            'uuid' => new UuidToStringType(),
+            'uuid'      => new UuidToStringType(),
             'createdAt' => new ChronosToTimestampType(),
             'updatedAt' => new ChronosToTimestampType(),
             'deletedAt' => new ChronosToTimestampType(),

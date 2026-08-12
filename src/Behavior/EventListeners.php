@@ -36,7 +36,7 @@ final readonly class EventListeners implements SchemaModifierInterface
                 continue;
             }
 
-            [$listenerClass, $args] = $listener;
+            [$listenerClass, $args]               = $listener;
             $schema[SchemaInterface::LISTENERS][] = [] === $args ? $listenerClass : [$listenerClass, $args];
         }
     }

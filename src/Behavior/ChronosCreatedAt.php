@@ -37,7 +37,10 @@ final readonly class ChronosCreatedAt implements SchemaModifierInterface
             $schema[SchemaInterface::COLUMNS][$this->field] = $this->column;
         }
 
-        $schema[SchemaInterface::LISTENERS][] = [ChronosCreateListener::class, ['field' => $this->field]];
+        $schema[SchemaInterface::LISTENERS][] = [
+            ChronosCreateListener::class, [
+                'field' => $this->field,
+            ]];
     }
 
     final public function withRole(string $role): static
