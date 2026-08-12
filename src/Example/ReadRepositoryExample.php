@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Example;
 
+use Cycle\ORM\Select;
 use Cycle\ORM\Select\Repository;
 use DateTimeInterface;
-use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
 
 /**
@@ -23,9 +23,9 @@ use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
  */
 class ReadRepositoryExample extends AbstractReadRepository
 {
-    public function __construct(SelectFactory $selectFactory)
+    public function __construct(Select $select)
     {
-        parent::__construct($selectFactory);
+        parent::__construct($select);
     }
 
     /**
@@ -42,10 +42,5 @@ class ReadRepositoryExample extends AbstractReadRepository
         ;
 
         return $select->fetchAll();
-    }
-
-    protected function getEntityClass(): string
-    {
-        return AnnotatedEntityWithAttributesExample::class;
     }
 }
