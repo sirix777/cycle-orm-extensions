@@ -69,43 +69,37 @@ Base repository implementations for common operations:
 - `AbstractReadRepository` - Base repository for read-only operations
 - `AbstractWriteRepository` - Base repository for read-write operations
 
-#### SelectFactory
+#### Repository Configuration
 
-The `SelectFactory` is a utility class used by repositories to create `Cycle\ORM\Select` instances. It ensures that the role passed to the select is a valid entity class implementing `EntityInterface`.
+Repositories are constructed by Cycle ORM itself. Map a repository class to an entity via the entity schema (`repository:` option), and Cycle injects the correct `Select` instance scoped to that entity's role.
 
-In your application, you should register `SelectFactory` in your dependency injection container. Registration example:
-
-```php
-<?php
-
-use Sirix\Cycle\Extension\Factory\SelectFactory;
-use Cycle\ORM\ORMInterface;
-
-/** @var ORMInterface $orm */
-$selectFactory = new SelectFactory($orm);
-```
-
-Repositories provided by this package require `SelectFactory` in their constructor:
+For write repositories, Cycle also passes `ORMInterface` as the second constructor argument.
 
 ```php
 <?php
 
+use Cycle\Annotated\Annotation\Entity;
 use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
-use Sirix\Cycle\Extension\Factory\SelectFactory;
+
+#[Entity(repository: MyRepository::class)]
+class MyEntity implements \Sirix\Cycle\Extension\Domain\Contract\EntityInterface
+{
+    // ...
+}
 
 class MyRepository extends AbstractReadRepository
 {
-    public function __construct(SelectFactory $selectFactory)
+    // Select is injected by Cycle ORM based on entity role from schema
+    public function findActiveUsers(): array
     {
-        parent::__construct($selectFactory);
-    }
-
-    protected function getEntityClass(): string
-    {
-        return MyEntity::class;
+        return $this->select()
+            ->where('active', true)
+            ->fetchAll();
     }
 }
 ```
+
+For container-based applications using laminas-servicemanager, register repositories with `Sirix\Cycle\Factory\RepositoryFactory` (from the `sirix/cycle-orm-factory` package) which resolves the entity role from the compiled schema.
 
 ### Typecasts
 
@@ -626,15 +620,15 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Example;
 
 use Cycle\ORM\ORMInterface;
+use Cycle\ORM\Select;
 use DateTimeInterface;
-use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Sirix\Cycle\Extension\Repository\AbstractWriteRepository;
 
 class WriteRepositoryExample extends AbstractWriteRepository
 {
-    public function __construct(ORMInterface $orm, SelectFactory $selectFactory)
+    public function __construct(Select $select, ORMInterface $orm)
     {
-        parent::__construct($orm, $selectFactory);
+        parent::__construct($select, $orm);
     }
 
     /**
@@ -646,11 +640,6 @@ class WriteRepositoryExample extends AbstractWriteRepository
             ->where('createdAt', '>', $date->getTimestamp());
 
         return $select->fetchAll();
-    }
-
-    protected function getEntityClass(): string
-    {
-        return AnnotatedEntityWithAttributesExample::class;
     }
 }
 ```

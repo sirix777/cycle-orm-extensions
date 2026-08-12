@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Example;
 
 use Cycle\ORM\ORMInterface;
+use Cycle\ORM\Select;
 use Cycle\ORM\Select\Repository;
 use DateTimeInterface;
-use Sirix\Cycle\Extension\Factory\SelectFactory;
 use Sirix\Cycle\Extension\Repository\AbstractWriteRepository;
 
 /**
@@ -24,9 +24,9 @@ use Sirix\Cycle\Extension\Repository\AbstractWriteRepository;
  */
 class WriteRepositoryExample extends AbstractWriteRepository
 {
-    public function __construct(ORMInterface $orm, SelectFactory $selectFactory)
+    public function __construct(Select $select, ORMInterface $orm)
     {
-        parent::__construct($orm, $selectFactory);
+        parent::__construct($select, $orm);
     }
 
     /**
@@ -43,10 +43,5 @@ class WriteRepositoryExample extends AbstractWriteRepository
         ;
 
         return $select->fetchAll();
-    }
-
-    protected function getEntityClass(): string
-    {
-        return AnnotatedEntityWithAttributesExample::class;
     }
 }

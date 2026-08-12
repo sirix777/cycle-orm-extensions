@@ -37,7 +37,10 @@ final readonly class ChronosSoftDelete implements SchemaModifierInterface
             $schema[SchemaInterface::COLUMNS][$this->field] = $this->column;
         }
 
-        $schema[SchemaInterface::LISTENERS][] = [ChronosSoftDeleteListener::class, ['field' => $this->field]];
+        $schema[SchemaInterface::LISTENERS][] = [
+            ChronosSoftDeleteListener::class, [
+                'field' => $this->field,
+            ]];
     }
 
     final public function withRole(string $role): static

@@ -21,13 +21,13 @@ trait HasUuidIdentifierTrait
     public function next(int $version = 7, ...$args): UuidInterface
     {
         return match ($version) {
-            1 => Uuid::uuid1(...$args),
-            2 => Uuid::uuid2(...$args),
-            3 => Uuid::uuid3(...$args),
-            4 => Uuid::uuid4(),
-            5 => Uuid::uuid5(...$args),
-            6 => Uuid::uuid6(...$args),
-            8 => Uuid::uuid8(...$args),
+            1       => Uuid::uuid1(...$args),
+            2       => Uuid::uuid2(...$args),
+            3       => Uuid::uuid3(...$args),
+            4       => Uuid::uuid4(),
+            5       => Uuid::uuid5(...$args),
+            6       => Uuid::uuid6(...$args),
+            8       => Uuid::uuid8(...$args),
             default => Uuid::uuid7(),
         };
     }

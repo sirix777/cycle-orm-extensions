@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.0.0] - 2026-08-12
+
+### Removed
+- Removed `Sirix\Cycle\Extension\Factory\SelectFactory` class. Repositories no longer require `SelectFactory` - Cycle ORM injects the entity-scoped `Select` instance directly.
+- Removed `abstract protected function getEntityClass(): string` from `AbstractReadRepository`. Entity role is now determined by the Cycle schema (`repository:` option on the entity).
+
+### Changed
+- `AbstractReadRepository` constructor now accepts `Cycle\ORM\Select $select` directly. The explicit constructor was removed as it delegates to the parent `Repository` class.
+- `AbstractWriteRepository` constructor signature changed to `__construct(Select $select, ORMInterface $orm)`.
+- Repository example classes updated to reflect the new constructor signatures.
+
+### Breaking Changes
+- `SelectFactory` no longer exists. Remove all references from your DI container and repository constructors.
+- Repository subclasses must no longer implement `getEntityClass()`. Remove the method and map the repository to the entity via `#[Entity(repository: ...)]` or schema definition.
+- `AbstractWriteRepository` constructor parameter order: `Select $select` first, `ORMInterface $orm` second.
+
+
 ## [3.0.1] - 2026-03-10
 
 ### Added
