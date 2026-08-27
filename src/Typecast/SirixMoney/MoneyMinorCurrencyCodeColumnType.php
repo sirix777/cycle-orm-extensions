@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\SirixMoney;
 
 use Brick\Money\Money;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Money\MoneyFactory;
 use Sirix\Money\MoneyFormatter;
@@ -39,12 +39,12 @@ final class MoneyMinorCurrencyCodeColumnType extends AbstractMoneyType
     private function currencyCode(CastContext $context): int|string
     {
         if (! array_key_exists($this->currencyCodeEntityProperty, $context->data)) {
-            throw new InvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] not found in context.");
+            throw new TypecastInvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] not found in context.");
         }
 
         $currencyCode = $context->data[$this->currencyCodeEntityProperty];
         if (! is_int($currencyCode) && ! is_string($currencyCode)) {
-            throw new InvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] must be an integer or string.");
+            throw new TypecastInvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] must be an integer or string.");
         }
 
         return $currencyCode;

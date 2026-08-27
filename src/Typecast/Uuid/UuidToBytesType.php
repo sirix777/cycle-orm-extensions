@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Uuid;
 
 use Attribute;
-use Exception;
-use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 
 use function is_string;
 
@@ -23,15 +22,9 @@ final class UuidToBytesType extends AbstractUuidType
     protected function toPhpValue(mixed $value): UuidInterface
     {
         if (! is_string($value)) {
-            throw new InvalidArgumentException('Incorrect value.');
+            throw new TypecastInvalidArgumentException('Incorrect value.');
         }
 
-        try {
-            $uuid = Uuid::fromBytes($value);
-        } catch (Exception) {
-            throw new InvalidArgumentException();
-        }
-
-        return $uuid;
+        return Uuid::fromBytes($value);
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Entity\Trait;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Sirix\Cycle\Extension\Exception\EntityInvalidArgumentException;
 
 trait HasUuidIdentifierTrait
 {
@@ -35,7 +35,7 @@ trait HasUuidIdentifierTrait
     public function setIdentifier(int|UuidInterface $identifier): void
     {
         if (! $identifier instanceof UuidInterface) {
-            throw new InvalidArgumentException('This entity only supports UUID identifiers, integer provided');
+            throw new EntityInvalidArgumentException('This entity only supports UUID identifiers, integer provided');
         }
 
         $this->uuid = $identifier;

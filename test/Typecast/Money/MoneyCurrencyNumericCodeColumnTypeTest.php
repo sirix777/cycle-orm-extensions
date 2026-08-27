@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Test\Typecast\Money;
 
 use Brick\Money\Money;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException as InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Money\MoneyCurrencyNumericCodeColumnType;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;

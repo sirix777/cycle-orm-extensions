@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Typecast\Enum;
 
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException as InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Enum\StringEnumType;
-use ValueError;
 
 enum TestStringEnum: string
 {
@@ -74,7 +73,7 @@ final class StringEnumTypeTest extends TestCase
         $type = new StringEnumType(TestStringEnum::class);
         $context = new CastContext('field', []);
 
-        $this->expectException(ValueError::class);
+        $this->expectException(InvalidArgumentException::class);
         $type->convertToPhpValue('archived', $context);
     }
 }

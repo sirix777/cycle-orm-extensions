@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Typecast\Enum;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Enum\EnumNativeTypecast;
 
 enum NativeStringEnum: string
@@ -39,14 +39,14 @@ final class EnumNativeTypecastTest extends TestCase
 
     public function testToStringEnumRejectsInvalidDatabaseValue(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypecastInvalidArgumentException::class);
 
         EnumNativeTypecast::toStringEnum(1, NativeStringEnum::class);
     }
 
     public function testToStringEnumRequiresStringBackedEnum(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypecastInvalidArgumentException::class);
 
         EnumNativeTypecast::toStringEnum(1, NativeIntegerEnum::class);
     }
@@ -64,22 +64,35 @@ final class EnumNativeTypecastTest extends TestCase
 
     public function testToIntEnumRejectsInvalidDatabaseValue(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypecastInvalidArgumentException::class);
 
         EnumNativeTypecast::toIntEnum('1.0', NativeIntegerEnum::class);
     }
 
     public function testToIntEnumRequiresIntBackedEnum(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypecastInvalidArgumentException::class);
 
         EnumNativeTypecast::toIntEnum('draft', NativeStringEnum::class);
     }
 
     public function testNativeTypecastRequiresBackedEnum(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypecastInvalidArgumentException::class);
 
         EnumNativeTypecast::toStringEnum('value', NativeUnitEnum::class);
+    }
+
+    public function testNativeTypecastWrapsUnknownEnumValue(): void
+    {
+        try {
+            EnumNativeTypecast::toStringEnum('unknown', NativeStringEnum::class);
+        } catch (TypecastInvalidArgumentException $exception) {
+            $this->assertInstanceOf(\ValueError::class, $exception->getPrevious());
+
+            return;
+        }
+
+        $this->fail('Expected TypecastInvalidArgumentException to be thrown.');
     }
 }

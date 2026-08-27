@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Chronos;
 
 use Cake\Chronos\Chronos;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
+use Throwable;
 
 abstract class AbstractChronosType implements TypeInterface
 {
@@ -21,10 +22,14 @@ abstract class AbstractChronosType implements TypeInterface
         }
 
         if (! $value instanceof Chronos) {
-            throw new InvalidArgumentException('Incorrect value.');
+            throw new TypecastInvalidArgumentException('Incorrect value.');
         }
 
-        return $this->toDatabaseValue($value);
+        try {
+            return $this->toDatabaseValue($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     public function convertToPhpValue(mixed $value, CastContext $context): ?Chronos
@@ -33,7 +38,11 @@ abstract class AbstractChronosType implements TypeInterface
             return null;
         }
 
-        return $this->toPhpValue($value);
+        try {
+            return $this->toPhpValue($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     abstract protected function toDatabaseValue(Chronos $value): mixed;

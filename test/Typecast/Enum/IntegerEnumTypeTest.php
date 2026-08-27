@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Typecast\Enum;
 
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException as InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Enum\IntegerEnumType;
-use ValueError;
 
 enum TestIntegerEnum: int
 {
@@ -75,7 +74,7 @@ final class IntegerEnumTypeTest extends TestCase
         $type = new IntegerEnumType(TestIntegerEnum::class);
         $context = new CastContext('field', []);
 
-        $this->expectException(ValueError::class);
+        $this->expectException(InvalidArgumentException::class);
         $type->convertToPhpValue('999', $context);
     }
 }

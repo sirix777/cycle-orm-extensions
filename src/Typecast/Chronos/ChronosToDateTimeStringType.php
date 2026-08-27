@@ -6,7 +6,7 @@ namespace Sirix\Cycle\Extension\Typecast\Chronos;
 
 use Attribute;
 use Cake\Chronos\Chronos;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 
 use function is_int;
 use function is_string;
@@ -22,7 +22,7 @@ final class ChronosToDateTimeStringType extends AbstractChronosType
     protected function toPhpValue(mixed $value): Chronos
     {
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException('Incorrect value.');
+            throw new TypecastInvalidArgumentException('Incorrect value.');
         }
 
         if (is_int($value)) {

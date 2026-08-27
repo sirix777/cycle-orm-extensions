@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Enum;
 
 use BackedEnum;
-use InvalidArgumentException;
 use ReflectionEnum;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
+use Throwable;
 
-use ReflectionException;
 use function is_int;
 use function is_string;
 use function is_subclass_of;
@@ -21,76 +21,87 @@ final class EnumNativeTypecast
 {
     /**
      * @param class-string $enumClass
-     * @throws ReflectionException
+     *
+     * @throws TypecastInvalidArgumentException
      */
     public static function toStringEnum(mixed $value, string $enumClass): ?BackedEnum
     {
-        self::assertBackingType($enumClass, 'string');
+        try {
+            self::assertBackingType($enumClass, 'string');
 
-        if (null === $value) {
-            return null;
+            if (null === $value) {
+                return null;
+            }
+
+            if ($value instanceof $enumClass && $value instanceof BackedEnum) {
+                return $value;
+            }
+
+            if (! is_string($value)) {
+                throw new TypecastInvalidArgumentException('Database value must be a string.');
+            }
+
+            $enum = $enumClass::from($value);
+
+            if (! $enum instanceof BackedEnum) {
+                throw new TypecastInvalidArgumentException('Enum class must be a backed enum.');
+            }
+
+            return $enum;
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
         }
-
-        if ($value instanceof $enumClass && $value instanceof BackedEnum) {
-            return $value;
-        }
-
-        if (! is_string($value)) {
-            throw new InvalidArgumentException('Database value must be a string.');
-        }
-
-        $enum = $enumClass::from($value);
-
-        if (! $enum instanceof BackedEnum) {
-            throw new InvalidArgumentException('Enum class must be a backed enum.');
-        }
-
-        return $enum;
     }
 
     /**
      * @param class-string $enumClass
-     * @throws ReflectionException
+     *
+     * @throws TypecastInvalidArgumentException
      */
     public static function toIntEnum(mixed $value, string $enumClass): ?BackedEnum
     {
-        self::assertBackingType($enumClass, 'int');
+        try {
+            self::assertBackingType($enumClass, 'int');
 
-        if (null === $value) {
-            return null;
+            if (null === $value) {
+                return null;
+            }
+
+            if ($value instanceof $enumClass && $value instanceof BackedEnum) {
+                return $value;
+            }
+
+            if (! self::isIntOrNumericString($value)) {
+                throw new TypecastInvalidArgumentException('Database value must be an int or numeric string.');
+            }
+
+            $enum = $enumClass::from((int) $value);
+
+            if (! $enum instanceof BackedEnum) {
+                throw new TypecastInvalidArgumentException('Enum class must be a backed enum.');
+            }
+
+            return $enum;
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
         }
-
-        if ($value instanceof $enumClass && $value instanceof BackedEnum) {
-            return $value;
-        }
-
-        if (! self::isIntOrNumericString($value)) {
-            throw new InvalidArgumentException('Database value must be an int or numeric string.');
-        }
-
-        $enum = $enumClass::from((int) $value);
-
-        if (! $enum instanceof BackedEnum) {
-            throw new InvalidArgumentException('Enum class must be a backed enum.');
-        }
-
-        return $enum;
     }
 
     /**
      * @param class-string $enumClass
-     * @throws ReflectionException
+     *
+     * @throws TypecastInvalidArgumentException
      */
     private static function assertBackingType(string $enumClass, string $expectedType): void
     {
         if (! is_subclass_of($enumClass, BackedEnum::class)) {
-            throw new InvalidArgumentException('Enum class must be a backed enum.');
+            throw new TypecastInvalidArgumentException('Enum class must be a backed enum.');
         }
 
         $backingType = (new ReflectionEnum($enumClass))->getBackingType()?->getName();
 
         if ($expectedType !== $backingType) {
-            throw new InvalidArgumentException("Enum must be {$expectedType}-backed.");
+            throw new TypecastInvalidArgumentException("Enum must be {$expectedType}-backed.");
         }
     }
 

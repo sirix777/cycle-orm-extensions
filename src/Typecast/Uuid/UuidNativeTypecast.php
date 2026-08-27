@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Uuid;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
+use Throwable;
 
 use function is_string;
 use function strlen;
@@ -30,15 +31,23 @@ final class UuidNativeTypecast
         }
 
         if (! is_string($value)) {
-            throw new InvalidArgumentException('Database value must be string|UuidInterface|null.');
+            throw new TypecastInvalidArgumentException('Database value must be string|UuidInterface|null.');
         }
 
         // Binary UUID(16) storage.
         if (16 === strlen($value)) {
-            return Uuid::fromBytes($value);
+            try {
+                return Uuid::fromBytes($value);
+            } catch (Throwable $exception) {
+                throw TypecastInvalidArgumentException::wrap($exception);
+            }
         }
 
-        return Uuid::fromString($value);
+        try {
+            return Uuid::fromString($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     public static function toUuidFromString(mixed $value): ?UuidInterface
@@ -52,10 +61,14 @@ final class UuidNativeTypecast
         }
 
         if (! is_string($value)) {
-            throw new InvalidArgumentException('Database value must be string|UuidInterface|null.');
+            throw new TypecastInvalidArgumentException('Database value must be string|UuidInterface|null.');
         }
 
-        return Uuid::fromString($value);
+        try {
+            return Uuid::fromString($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     public static function toUuidFromBytes(mixed $value): ?UuidInterface
@@ -69,9 +82,13 @@ final class UuidNativeTypecast
         }
 
         if (! is_string($value)) {
-            throw new InvalidArgumentException('Database value must be bytes-string|UuidInterface|null.');
+            throw new TypecastInvalidArgumentException('Database value must be bytes-string|UuidInterface|null.');
         }
 
-        return Uuid::fromBytes($value);
+        try {
+            return Uuid::fromBytes($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 }

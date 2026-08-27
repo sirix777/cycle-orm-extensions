@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Typecast\Uuid;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\UuidInterface;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
+use Throwable;
 
 abstract class AbstractUuidType implements TypeInterface
 {
@@ -19,10 +20,14 @@ abstract class AbstractUuidType implements TypeInterface
         }
 
         if (! $value instanceof UuidInterface) {
-            throw new InvalidArgumentException('Incorrect value.');
+            throw new TypecastInvalidArgumentException('Incorrect value.');
         }
 
-        return $this->toDatabaseValue($value);
+        try {
+            return $this->toDatabaseValue($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     public function convertToPhpValue(mixed $value, CastContext $context): ?UuidInterface
@@ -31,7 +36,11 @@ abstract class AbstractUuidType implements TypeInterface
             return null;
         }
 
-        return $this->toPhpValue($value);
+        try {
+            return $this->toPhpValue($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     abstract protected function toDatabaseValue(UuidInterface $value): mixed;

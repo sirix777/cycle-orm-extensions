@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Test\Typecast\Chronos;
 
 use Cake\Chronos\Chronos;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException as InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Chronos\ChronosToTimestampType;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;

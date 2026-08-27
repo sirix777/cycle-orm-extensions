@@ -6,10 +6,11 @@ namespace Sirix\Cycle\Extension\Typecast\Enum;
 
 use Attribute;
 use BackedEnum;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
+use Throwable;
 
 use function is_string;
 
@@ -28,11 +29,11 @@ final readonly class StringEnumType implements TypeInterface
         }
 
         if (! $value instanceof $this->enumClass) {
-            throw new InvalidArgumentException('Value must be an instance of the configured enum class.');
+            throw new TypecastInvalidArgumentException('Value must be an instance of the configured enum class.');
         }
 
         if (! is_string($value->value)) {
-            throw new InvalidArgumentException('Enum must be string-backed.');
+            throw new TypecastInvalidArgumentException('Enum must be string-backed.');
         }
 
         return $value->value;
@@ -45,9 +46,13 @@ final readonly class StringEnumType implements TypeInterface
         }
 
         if (! is_string($value)) {
-            throw new InvalidArgumentException('Database value must be a string.');
+            throw new TypecastInvalidArgumentException('Database value must be a string.');
         }
 
-        return $this->enumClass::from($value);
+        try {
+            return $this->enumClass::from($value);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 }

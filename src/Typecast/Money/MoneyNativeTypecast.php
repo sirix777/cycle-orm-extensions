@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Money;
 
 use Brick\Money\Currency;
-use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
+use Throwable;
 
 use function is_int;
 use function is_string;
@@ -21,9 +21,6 @@ use function is_string;
  */
 final class MoneyNativeTypecast
 {
-    /**
-     * @throws UnknownCurrencyException
-     */
     public static function toMoneyByCurrencyCode(mixed $value, string $currencyCode = 'EUR'): ?Money
     {
         if (null === $value) {
@@ -31,15 +28,16 @@ final class MoneyNativeTypecast
         }
 
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException('Database value must be a string or integer.');
+            throw new TypecastInvalidArgumentException('Database value must be a string or integer.');
         }
 
-        return Money::of($value, $currencyCode);
+        try {
+            return Money::of($value, $currencyCode);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
-    /**
-     * @throws UnknownCurrencyException
-     */
     public static function toMinorMoneyByCurrencyCode(mixed $value, string $currencyCode = 'EUR'): ?Money
     {
         if (null === $value) {
@@ -47,15 +45,16 @@ final class MoneyNativeTypecast
         }
 
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException('Database value must be a string or integer.');
+            throw new TypecastInvalidArgumentException('Database value must be a string or integer.');
         }
 
-        return Money::ofMinor($value, $currencyCode);
+        try {
+            return Money::ofMinor($value, $currencyCode);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
-    /**
-     * @throws UnknownCurrencyException
-     */
     public static function toMoneyByNumericCode(mixed $value, int $numericCode): ?Money
     {
         if (null === $value) {
@@ -63,15 +62,16 @@ final class MoneyNativeTypecast
         }
 
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException('Database value must be a string or integer.');
+            throw new TypecastInvalidArgumentException('Database value must be a string or integer.');
         }
 
-        return Money::of($value, Currency::ofNumericCode($numericCode));
+        try {
+            return Money::of($value, Currency::ofNumericCode($numericCode));
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
-    /**
-     * @throws UnknownCurrencyException
-     */
     public static function toMinorMoneyByNumericCode(mixed $value, int $numericCode): ?Money
     {
         if (null === $value) {
@@ -79,9 +79,13 @@ final class MoneyNativeTypecast
         }
 
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException('Database value must be a string or integer.');
+            throw new TypecastInvalidArgumentException('Database value must be a string or integer.');
         }
 
-        return Money::ofMinor($value, Currency::ofNumericCode($numericCode));
+        try {
+            return Money::ofMinor($value, Currency::ofNumericCode($numericCode));
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 }

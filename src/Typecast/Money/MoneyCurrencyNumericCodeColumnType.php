@@ -7,7 +7,7 @@ namespace Sirix\Cycle\Extension\Typecast\Money;
 use Attribute;
 use Brick\Money\Currency;
 use Brick\Money\Money;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
 
@@ -26,7 +26,7 @@ final class MoneyCurrencyNumericCodeColumnType extends AbstractMoneyType impleme
     protected function toPhpValue(mixed $value, CastContext $context): Money
     {
         if (! array_key_exists($this->currencyCodeEntityProperty, $context->data)) {
-            throw new InvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] not found in context.");
+            throw new TypecastInvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] not found in context.");
         }
 
         return Money::of($value, Currency::ofNumericCode((int) $context->data[$this->currencyCodeEntityProperty]));

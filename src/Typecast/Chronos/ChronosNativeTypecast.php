@@ -7,7 +7,8 @@ namespace Sirix\Cycle\Extension\Typecast\Chronos;
 use Cake\Chronos\Chronos;
 use DateTimeImmutable;
 use DateTimeInterface;
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException;
+use Throwable;
 
 use function is_int;
 use function is_numeric;
@@ -27,23 +28,27 @@ final class ChronosNativeTypecast
             return null;
         }
 
-        if ($value instanceof Chronos) {
-            return $value;
-        }
+        try {
+            if ($value instanceof Chronos) {
+                return $value;
+            }
 
-        if ($value instanceof DateTimeImmutable) {
-            return Chronos::instance($value);
-        }
+            if ($value instanceof DateTimeImmutable) {
+                return Chronos::instance($value);
+            }
 
-        if ($value instanceof DateTimeInterface) {
-            return Chronos::instance(DateTimeImmutable::createFromInterface($value));
-        }
+            if ($value instanceof DateTimeInterface) {
+                return Chronos::instance(DateTimeImmutable::createFromInterface($value));
+            }
 
-        if (is_string($value)) {
-            return new Chronos($value);
-        }
+            if (is_string($value)) {
+                return new Chronos($value);
+            }
 
-        throw new InvalidArgumentException('Database value must be DateTimeInterface|string|null.');
+            throw new TypecastInvalidArgumentException('Database value must be DateTimeInterface|string|null.');
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 
     public static function toChronosFromTimestamp(mixed $value, string $timeZone = 'UTC'): ?Chronos
@@ -53,9 +58,13 @@ final class ChronosNativeTypecast
         }
 
         if (! is_int($value) && ! is_numeric($value)) {
-            throw new InvalidArgumentException('Database value must be int|string-numeric|null.');
+            throw new TypecastInvalidArgumentException('Database value must be int|string-numeric|null.');
         }
 
-        return Chronos::createFromTimestamp((int) $value, $timeZone);
+        try {
+            return Chronos::createFromTimestamp((int) $value, $timeZone);
+        } catch (Throwable $exception) {
+            throw TypecastInvalidArgumentException::wrap($exception);
+        }
     }
 }

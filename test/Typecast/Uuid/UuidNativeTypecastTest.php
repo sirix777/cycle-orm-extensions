@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Typecast\Uuid;
 
-use InvalidArgumentException;
+use Sirix\Cycle\Extension\Exception\TypecastInvalidArgumentException as InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
