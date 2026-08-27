@@ -24,4 +24,5 @@ final class CurrencyNativeTypecastTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         CurrencyNativeTypecast::toCurrency([]);
     }
+
 }

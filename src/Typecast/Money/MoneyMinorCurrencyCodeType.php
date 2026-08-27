@@ -8,31 +8,19 @@ use Attribute;
 use Brick\Money\Money;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
-use Sirix\Money\CryptoCurrencyCode;
-use Sirix\Money\Exception\SirixMoneyException;
-use Sirix\Money\FiatCurrencyCode;
-use Sirix\Money\SirixMoney;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class MoneyMinorCurrencyCodeType extends AbstractMoneyType implements TypeInterface
 {
-    public function __construct(private readonly CryptoCurrencyCode|FiatCurrencyCode $currencyCode = FiatCurrencyCode::Eur) {}
+    public function __construct(private readonly string $currencyCode = 'EUR') {}
 
-    /**
-     * @throws SirixMoneyException
-     */
     protected function toDatabaseValue(Money $value): string
     {
-        $money = SirixMoney::of($value->getAmount(), $value->getCurrency()->getCurrencyCode());
-
-        return SirixMoney::getMinorAmount($money);
+        return $this->minorAmountToDatabaseValue($value);
     }
 
-    /**
-     * @throws SirixMoneyException
-     */
     protected function toPhpValue(mixed $value, CastContext $context): Money
     {
-        return SirixMoney::ofMinor($value, $this->currencyCode->value);
+        return Money::ofMinor($value, $this->currencyCode);
     }
 }

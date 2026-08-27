@@ -44,4 +44,5 @@ final class MoneyMinorCurrencyNumericCodeColumnTypeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $type->convertToPhpValue(1050, $context);
     }
+
 }

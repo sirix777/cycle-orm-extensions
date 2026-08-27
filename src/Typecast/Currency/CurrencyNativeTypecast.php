@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Currency;
 
 use Brick\Money\Currency;
+use Brick\Money\Exception\UnknownCurrencyException;
 use InvalidArgumentException;
-use Sirix\Money\CurrencyCode;
-use Sirix\Money\CurrencyRegistry;
-use Sirix\Money\Exception\SirixMoneyException;
 
 use function is_numeric;
 use function is_string;
@@ -19,7 +17,7 @@ use function is_string;
 final class CurrencyNativeTypecast
 {
     /**
-     * @throws SirixMoneyException
+     * @throws UnknownCurrencyException
      */
     public static function toCurrency(mixed $value): Currency
     {
@@ -27,6 +25,6 @@ final class CurrencyNativeTypecast
             throw new InvalidArgumentException('Database value must be a string or numeric.');
         }
 
-        return CurrencyRegistry::getInstance()->get(CurrencyCode::fromNumericCode((int) $value)->value);
+        return Currency::ofNumericCode((int) $value);
     }
 }

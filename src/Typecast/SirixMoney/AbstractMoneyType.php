@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sirix\Cycle\Extension\Typecast\Money;
+namespace Sirix\Cycle\Extension\Typecast\SirixMoney;
 
 use Brick\Money\Money;
 use InvalidArgumentException;
@@ -10,12 +10,19 @@ use Override;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
+use Sirix\Money\MoneyFactory;
+use Sirix\Money\MoneyFormatter;
 
 use function is_numeric;
 use function is_string;
 
 abstract class AbstractMoneyType implements TypeInterface
 {
+    public function __construct(
+        protected readonly MoneyFactory $moneyFactory,
+        private readonly MoneyFormatter $moneyFormatter = new MoneyFormatter(),
+    ) {}
+
     #[Override]
     public function convertToDatabaseValue(mixed $value, UncastContext $context): ?string
     {
@@ -46,12 +53,12 @@ abstract class AbstractMoneyType implements TypeInterface
 
     final protected function amountToDatabaseValue(Money $value): string
     {
-        return (string) $value->getAmount()->strippedOfTrailingZeros();
+        return $this->moneyFormatter->amount($value);
     }
 
     final protected function minorAmountToDatabaseValue(Money $value): string
     {
-        return (string) $value->getMinorAmount();
+        return $this->moneyFormatter->minorAmount($value);
     }
 
     abstract protected function toDatabaseValue(Money $value): string;

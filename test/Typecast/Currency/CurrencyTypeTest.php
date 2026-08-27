@@ -52,4 +52,5 @@ final class CurrencyTypeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $type->convertToPhpValue([], $context);
     }
+
 }

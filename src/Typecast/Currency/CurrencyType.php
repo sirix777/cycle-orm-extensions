@@ -6,14 +6,12 @@ namespace Sirix\Cycle\Extension\Typecast\Currency;
 
 use Attribute;
 use Brick\Money\Currency;
+use Brick\Money\Exception\UnknownCurrencyException;
 use InvalidArgumentException;
 use Override;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
-use Sirix\Money\CurrencyCode;
-use Sirix\Money\CurrencyRegistry;
-use Sirix\Money\Exception\SirixMoneyException;
 
 use function is_numeric;
 use function is_string;
@@ -28,11 +26,16 @@ final class CurrencyType implements TypeInterface
             throw new InvalidArgumentException('Value must be an instance of Currency.');
         }
 
-        return $value->getNumericCode();
+        $numericCode = $value->getNumericCode();
+        if (null === $numericCode) {
+            throw new InvalidArgumentException('Currency must have a numeric code.');
+        }
+
+        return $numericCode;
     }
 
     /**
-     * @throws SirixMoneyException
+     * @throws UnknownCurrencyException
      */
     #[Override]
     public function convertToPhpValue(mixed $value, CastContext $context): Currency
@@ -41,6 +44,6 @@ final class CurrencyType implements TypeInterface
             throw new InvalidArgumentException('Database value must be a string or numeric.');
         }
 
-        return CurrencyRegistry::getInstance()->get(CurrencyCode::fromNumericCode((int) $value)->value);
+        return Currency::ofNumericCode((int) $value);
     }
 }

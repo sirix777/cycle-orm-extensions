@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Typecast\Money;
 
 use Attribute;
+use Brick\Money\Currency;
 use Brick\Money\Money;
 use InvalidArgumentException;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Contract\TypeInterface;
-use Sirix\Money\CurrencyCode;
-use Sirix\Money\Exception\SirixMoneyException;
-use Sirix\Money\SirixMoney;
 
 use function array_key_exists;
 
@@ -20,26 +18,17 @@ final class MoneyMinorCurrencyNumericCodeColumnType extends AbstractMoneyType im
 {
     public function __construct(private readonly string $currencyCodeEntityProperty = 'currencyCode') {}
 
-    /**
-     * @throws SirixMoneyException
-     */
     protected function toDatabaseValue(Money $value): string
     {
-        $money = SirixMoney::of($value->getAmount(), $value->getCurrency()->getCurrencyCode());
-
-        return SirixMoney::getMinorAmount($money);
+        return $this->minorAmountToDatabaseValue($value);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     * @throws SirixMoneyException
-     */
     protected function toPhpValue(mixed $value, CastContext $context): Money
     {
         if (! array_key_exists($this->currencyCodeEntityProperty, $context->data)) {
             throw new InvalidArgumentException("Entity property [{$this->currencyCodeEntityProperty}] not found in context.");
         }
 
-        return SirixMoney::ofMinor($value, CurrencyCode::fromNumericCode($context->data[$this->currencyCodeEntityProperty]));
+        return Money::ofMinor($value, Currency::ofNumericCode((int) $context->data[$this->currencyCodeEntityProperty]));
     }
 }

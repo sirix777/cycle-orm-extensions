@@ -7,7 +7,6 @@ namespace Sirix\Cycle\Extension\Test\Typecast\Money;
 use Brick\Money\Money;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Money\MoneyCurrencyCodeType;
-use Sirix\Money\FiatCurrencyCode;
 use Sirix\Cycle\Extension\Typecast\Context\CastContext;
 use Sirix\Cycle\Extension\Typecast\Context\UncastContext;
 
@@ -15,7 +14,7 @@ final class MoneyCurrencyCodeTypeTest extends TestCase
 {
     public function testConvertToDatabaseValue(): void
     {
-        $type = new MoneyCurrencyCodeType(FiatCurrencyCode::Usd);
+        $type = new MoneyCurrencyCodeType('USD');
         $money = Money::of('10.50', 'USD');
         $context = new UncastContext('field', []);
 
@@ -25,7 +24,7 @@ final class MoneyCurrencyCodeTypeTest extends TestCase
 
     public function testConvertToPhpValue(): void
     {
-        $type = new MoneyCurrencyCodeType(FiatCurrencyCode::Usd);
+        $type = new MoneyCurrencyCodeType('USD');
         $context = new CastContext('field', []);
 
         $result = $type->convertToPhpValue('10.50', $context);

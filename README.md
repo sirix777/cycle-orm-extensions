@@ -270,7 +270,7 @@ $entity->getFields()->set(
 use Sirix\Cycle\Extension\Typecast\Array\ArrayNativeTypecast;
 use Sirix\Cycle\Extension\Typecast\Boolean\BooleanNativeTypecast;
 use Sirix\Cycle\Extension\Typecast\Currency\CurrencyNativeTypecast;
-use Sirix\Cycle\Extension\Typecast\CurrencyCode\CurrencyCodeNativeTypecast;
+use Sirix\Cycle\Extension\Typecast\Enum\EnumNativeTypecast;
 use Sirix\Cycle\Extension\Typecast\Money\MoneyNativeTypecast;
 
 // bool
@@ -285,8 +285,11 @@ $field->setTypecast([ArrayNativeTypecast::class, 'toArrayFromDelimitedString', [
 // currency (numeric code -> Brick\Money\Currency)
 $field->setTypecast([CurrencyNativeTypecast::class, 'toCurrency']);
 
-// currency code (numeric code -> FiatCurrencyCode|CryptoCurrencyCode)
-$field->setTypecast([CurrencyCodeNativeTypecast::class, 'toCurrencyCode']);
+// string-backed enum
+$field->setTypecast([EnumNativeTypecast::class, 'toStringEnum', [Status::class]]);
+
+// int-backed enum
+$field->setTypecast([EnumNativeTypecast::class, 'toIntEnum', [Priority::class]]);
 
 // money with fixed currency code
 $field->setTypecast([MoneyNativeTypecast::class, 'toMoneyByCurrencyCode', ['USD']]);
@@ -314,8 +317,10 @@ Use this matrix when selecting typecast approach:
 | UUID (`uuid` / `binary(16)`) | Native | Use `UuidNativeTypecast::toUuidFromString` or `toUuidFromBytes`. |
 | Boolean | Native | Use `BooleanNativeTypecast::toBool`. |
 | Array / JSON / Delimited array | Native | Use `ArrayNativeTypecast::*`. |
-| Currency / CurrencyCode | Native | Use `CurrencyNativeTypecast::toCurrency`, `CurrencyCodeNativeTypecast::toCurrencyCode`. |
+| Backed enum | Native | Use `EnumNativeTypecast::toStringEnum` or `toIntEnum`. |
+| Currency | Native | Use `CurrencyNativeTypecast::toCurrency`. |
 | Money with fixed currency (known in config) | Native | Use `MoneyNativeTypecast::*` with fixed code argument. |
+| Money with a Sirix Money catalog | Handler | Use `Typecast\SirixMoney\*` types with an injected `MoneyFactory`. |
 | Money dependent on another entity field (e.g. currency column) | Handler | Requires row-level context (`$context->data`). |
 | Any conversion requiring access to multiple fields | Handler | Use `TypecastHandler` / `AttributeTypecastHandler`. |
 | Property-level attribute style (`#[SomeType]`) | Handler | Requires `AttributeTypecastHandler`. |
@@ -325,15 +330,44 @@ Practical rule:
 - Switch to handler when conversion needs context, bidirectional custom behavior, or property attributes.
 - **Currency (Brick\Money)**:
     - `#[CurrencyType]` - Converts `Brick\Money\Currency` to numeric code.
-    - `#[CurrencyCodeType]` - Converts `Sirix\Money\CurrencyCode` (fiat/crypto) to value.
 - **Money (Brick\Money)**:
-    - `#[MoneyCurrencyCodeType(currencyCode: FiatCurrencyCode::Eur)]` - Converts `Brick\Money\Money` to string amount using specified currency.
+    - `#[MoneyCurrencyCodeType(currencyCode: 'EUR')]` - Converts `Brick\Money\Money` to string amount using specified currency.
     - `#[MoneyCurrencyNumericCodeColumnType(currencyCodeEntityProperty: 'currencyCode')]` - Converts `Brick\Money\Money` to string amount, using another entity property for currency code.
-    - `#[MoneyMinorCurrencyCodeType(currencyCode: FiatCurrencyCode::Eur)]` - Converts `Brick\Money\Money` to integer (minor units).
+    - `#[MoneyMinorCurrencyCodeType(currencyCode: 'EUR')]` - Converts `Brick\Money\Money` to integer (minor units).
     - `#[MoneyMinorCurrencyNumericCodeColumnType(currencyCodeEntityProperty: 'currencyCode')]` - Converts `Brick\Money\Money` to integer (minor units), using another entity property for currency code.
+- **Money (Sirix Money 2.x catalog)**:
+    - `Typecast\SirixMoney\CurrencyType` - Converts `Brick\Money\Currency` using an injected `CurrencyCatalog`.
+    - `Typecast\SirixMoney\MoneyCurrencyCodeType` and `MoneyMinorCurrencyCodeType` - Convert `Brick\Money\Money` using a fixed catalog code.
+    - `Typecast\SirixMoney\MoneyCurrencyCodeColumnType` and `MoneyMinorCurrencyCodeColumnType` - Resolve a catalog code from another entity field.
 - **UUID (Ramsey\Uuid)**:
     - `#[UuidToBytesType]` - Converts UUID to binary.
     - `#[UuidToStringType]` - Converts UUID to string.
+
+#### Catalog-based Sirix Money Typecasts
+
+Sirix Money 2.x types require an application-owned `MoneyFactory`; this preserves the catalog isolation provided by `sirix/money` and supports its built-in digital or custom currencies. Configure these types in a custom `TypecastHandler`; they are not native callbacks or property attributes.
+
+```php
+use Brick\Money\Currency;
+use Sirix\Cycle\Extension\Typecast\Handler\TypecastHandler;
+use Sirix\Cycle\Extension\Typecast\SirixMoney\MoneyCurrencyCodeType;
+use Sirix\Money\Currency\ArrayCurrencyCatalog;
+use Sirix\Money\MoneyFactory;
+
+final class ProductTypecastHandler extends TypecastHandler
+{
+    protected function getConfig(): array
+    {
+        $factory = new MoneyFactory(new ArrayCurrencyCatalog(
+            new Currency('CREDIT', 9001, 'Store credit', 2),
+        ));
+
+        return [
+            'amount' => new MoneyCurrencyCodeType($factory, 'CREDIT'),
+        ];
+    }
+}
+```
 
 #### Typecast Traits
 
@@ -651,7 +685,8 @@ The package suggests the following dependencies for additional functionality:
 - `cakephp/chronos`: Required for Chronos datetime support
 - `cycle/annotated`: Required for annotated entity support
 - `cycle/entity-behavior`: Required for entity behaviors and lifecycle hooks support
-- `sirix/money`: Required for Money and Currency typecast support
+- `brick/money`: Required for ISO 4217 Money and Currency typecast support
+- `sirix/money`: Required for catalog-based Money and Currency typecast support
 
 ## License
 
