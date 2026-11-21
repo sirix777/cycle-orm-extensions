@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+        "php": "~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
         "cycle/orm": "^2.10",
         "ramsey/uuid": "^4.7"
     },
@@ -14,7 +14,7 @@
         "cakephp/chronos": "^3.1",
         "cycle/annotated": "^4.2",
         "cycle/entity-behavior": "^1.4",
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^12.5",
         "sirix/money": "^2.0.1"
     },
     "suggest": {
@@ -57,8 +57,8 @@
             "@phpstan",
             "@test"
         ],
-        "cs-check": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -vvv --diff",
-        "cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -vvv",
+        "cs-check": "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -vvv --diff",
+        "cs-fix": "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -vvv",
         "normalize": "@composer bin composer-normalize normalize --diff ../../composer.json",
         "phpstan": "php tools/phpstan/vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=2G",
         "rector": "php tools/rector/vendor/bin/rector process --dry-run --memory-limit=2G",

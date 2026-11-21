@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Repository;
 
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -55,7 +56,7 @@ abstract class AbstractRepositoryTestCase extends TestCase
      * Asserts that a method exists and can be called with the expected parameters.
      *
      * @param MockObject    $mock           The mock object
-     * @param string        $methodName     The method name to test
+     * @param non-empty-string $methodName The method name to test
      * @param array<mixed>  $parameters     The parameters to pass to the method
      * @param array<string> $parameterTypes The expected parameter types (e.g., ['object', 'bool', 'bool'])
      */
@@ -67,7 +68,7 @@ abstract class AbstractRepositoryTestCase extends TestCase
             if (is_object($param)) {
                 $withParams[] = $this->identicalTo($param);
             } else {
-                $withParams[] = $this->isType($this->normalizeType($parameterTypes[$index] ?? gettype($param)));
+                $withParams[] = $this->typeConstraint($parameterTypes[$index] ?? gettype($param));
             }
         }
 
@@ -101,21 +102,25 @@ abstract class AbstractRepositoryTestCase extends TestCase
     }
 
     /**
-     * Normalizes a type string to one of the valid types accepted by PHPUnit's isType() method.
+     * Maps a type name (including gettype() names) to the matching PHPUnit constraint.
      *
-     * @param string $type The type to normalize
-     *
-     * @return 'array'|'bool'|'callable'|'float'|'int'|'iterable'|'null'|'numeric'|'object'|'resource (closed)'|'resource'|'scalar'|'string' A valid type for PHPUnit's isType() method
+     * @param string $type The type to map
      */
-    private function normalizeType(string $type): string
+    private function typeConstraint(string $type): Constraint
     {
         return match ($type) {
-            'boolean' => 'bool',
-            'integer' => 'int',
-            'double', 'real' => 'float',
-            'object', 'array', 'string', 'float', 'int', 'bool', 'null',
-            'numeric', 'callable', 'iterable', 'scalar', 'resource', 'resource (closed)' => $type,
-            default => 'string', // Default to string for unknown types
+            'boolean', 'bool' => $this->isBool(),
+            'integer', 'int' => $this->isInt(),
+            'double', 'real', 'float' => $this->isFloat(),
+            'object' => $this->isObject(),
+            'array' => $this->isArray(),
+            'null' => $this->isNull(),
+            'numeric' => $this->isNumeric(),
+            'callable' => $this->isCallable(),
+            'iterable' => $this->isIterable(),
+            'scalar' => $this->isScalar(),
+            'resource' => $this->isResource(),
+            default => $this->isString(), // Default to string for unknown types
         };
     }
 }

@@ -21,7 +21,7 @@ This package provides a collection of practical extensions for [Cycle ORM](https
 
 ## Requirements
 
-- PHP 8.2, 8.3, 8.4, or 8.5
+- PHP 8.3, 8.4, 8.5, or 8.6
 - Cycle ORM 2.10+
 - Ramsey UUID 4.7+
 

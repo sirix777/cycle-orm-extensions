@@ -10,10 +10,12 @@ use Cycle\Database\DatabaseProviderInterface;
 use Cycle\Database\DatabaseInterface;
 use DateTime;
 use Exception;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Behavior\EventListeners;
 use stdClass;
 
+#[AllowMockObjectsWithoutExpectations]
 final class EventListenersTest extends TestCase
 {
     public function testModifySchemaAddsClassStringListeners(): void
