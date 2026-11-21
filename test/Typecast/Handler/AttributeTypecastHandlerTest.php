@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Sirix\Cycle\Extension\Test\Typecast\Handler;
 
 use Cycle\ORM\SchemaInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use Sirix\Cycle\Extension\Typecast\Array\ArrayToDelimitedStringType;
 use Sirix\Cycle\Extension\Typecast\Boolean\BooleanToIntType;
 use Sirix\Cycle\Extension\Typecast\Handler\AttributeTypecastHandler;
 
+#[AllowMockObjectsWithoutExpectations]
 final class AttributeTypecastHandlerTest extends TestCase
 {
     public function testSetRulesRemovesRulesForAnnotatedProperties(): void

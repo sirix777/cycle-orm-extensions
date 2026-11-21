@@ -14,14 +14,28 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ "8.3", "8.4", "8.5", "8.6" ]
+
+    name: PHP ${{ matrix.php-version }}
+
     steps:
     - uses: actions/checkout@v4
 
-    - name: Validate composer.json and composer.lock
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        coverage: none
+        tools: composer:v2
+
+    - name: Validate composer.json
       run: composer validate --strict
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: composer update --prefer-dist --no-progress
 
     - name: Run cs-check
       run: composer cs-check

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Repository;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
@@ -13,6 +14,7 @@ use Sirix\Cycle\Extension\Exception\EntityNotFoundException;
 /**
  * Tests for the ReadRepositoryInterface implementation.
  */
+#[AllowMockObjectsWithoutExpectations]
 final class AbstractReadRepositoryTest extends AbstractRepositoryTestCase
 {
     /**

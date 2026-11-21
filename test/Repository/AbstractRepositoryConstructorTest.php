@@ -6,6 +6,7 @@ namespace Sirix\Cycle\Extension\Test\Repository;
 
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Select;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -14,6 +15,7 @@ use Sirix\Cycle\Extension\Exception\EntityNotFoundException;
 use Sirix\Cycle\Extension\Repository\AbstractReadRepository;
 use Sirix\Cycle\Extension\Repository\AbstractWriteRepository;
 
+#[AllowMockObjectsWithoutExpectations]
 final class AbstractRepositoryConstructorTest extends TestCase
 {
     public function testReadRepositoryConstructWithSelect(): void

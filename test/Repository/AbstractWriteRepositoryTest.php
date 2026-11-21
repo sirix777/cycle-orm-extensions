@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sirix\Cycle\Extension\Test\Repository;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Sirix\Cycle\Extension\Domain\Contract\EntityInterface;
 use Sirix\Cycle\Extension\Domain\Contract\WriteRepositoryInterface;
@@ -12,6 +13,7 @@ use Sirix\Cycle\Extension\Exception\RepositoryPersistException;
 /**
  * Tests for the WriteRepositoryInterface implementation.
  */
+#[AllowMockObjectsWithoutExpectations]
 final class AbstractWriteRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
